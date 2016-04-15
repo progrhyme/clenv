@@ -15,7 +15,7 @@ init-env() {
   if [ -d $env_dir ]; then
     echo "'$env' already exists"
   else
-    mkdir -p $env_dir
+    mkdir -p $env_dir/{bin,modules}
     echo "Initialized env '$env'"
   fi
 }

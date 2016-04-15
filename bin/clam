@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -euo pipefail
+
+repos=$1
+module=${repos##*/}
+module=${module%.git}
+dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
+dest_module=${dest_dir}/${module}
+
+if [ -d $dest_module ]; then
+  cd $dest_module
+  git pull
+else
+  git clone $1 ${dest_module}
+fi
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clam> - clenv module manager
+
+=head1 SYNOPSYS
+
+    # Install or Update
+    clam git://<repos-url>
+
+=head1 DESCRIPTION
+
+TBD.
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=cut
+
+__EOF__
+
