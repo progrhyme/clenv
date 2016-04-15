@@ -1,0 +1,2 @@
+export CLENV_ROOT=$HOME/.clenv
+export CLENV_ENVIRONMENT=default

@@ -8,15 +8,20 @@ help() {
 }
 
 init-env() {
-  local env=${1:-default}
-  local base_dir=${CLENV_BASE_DIR:-$HOME/.clenv}
+  local env=${1:-${CLENV_ENVIRONMENT:-default}}
+  local base_dir=${CLENV_ROOT:-$HOME/.clenv}
   mkdir -p ${base_dir}/shims
-  mkdir -p ${base_dir}/environments/${env}
-  echo "Initialized env '$env'"
+  local env_dir=${base_dir}/environments/${env}
+  if [ -d $env_dir ]; then
+    echo "'$env' already exists"
+  else
+    mkdir -p $env_dir
+    echo "Initialized env '$env'"
+  fi
 }
 
 list-env() {
-  local base_dir=${CLENV_BASE_DIR:-$HOME/.clenv}
+  local base_dir=${CLENV_ROOT:-$HOME/.clenv}
   ls -1 ${base_dir}/environments/
 }
 
@@ -26,7 +31,8 @@ if [[ -z $command || $command =~ ^-?-h.* ]]; then
   help
 fi
 
-$1
+shift
+${command} "$@"
 
 exit 0
 
