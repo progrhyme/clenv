@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+help() {
+  pod2text $0
+  exit 1
+}
+
+init-env() {
+  local env=${1:-default}
+  local base_dir=${CLAMP_BASE_DIR:-$HOME/.clamp}
+  mkdir -p ${base_dir}/shims
+  mkdir -p ${base_dir}/environments/${env}
+  echo "Initialized env '$env'"
+}
+
+list-env() {
+  local base_dir=${CLAMP_BASE_DIR:-$HOME/.clamp}
+  ls -1 ${base_dir}/environments/
+}
+
+command=${1:-}
+
+if [[ -z $command || $command =~ ^-?-h.* ]]; then
+  help
+fi
+
+$1
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clamp> - Command-Line Assembly of Modules or Packages
+
+=head1 SYNOPSYS
+
+    clamp init-env $env
+    clamp list-env
+
+=head1 DESCRIPTION
+
+TBD.
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=cut
+
+__EOF__
+

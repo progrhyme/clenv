@@ -1,2 +1,4 @@
 *.swp
 /tmp/
+/environments/
+/shims/
