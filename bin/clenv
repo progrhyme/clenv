@@ -9,14 +9,14 @@ help() {
 
 init-env() {
   local env=${1:-default}
-  local base_dir=${CLAMP_BASE_DIR:-$HOME/.clamp}
+  local base_dir=${CLENV_BASE_DIR:-$HOME/.clenv}
   mkdir -p ${base_dir}/shims
   mkdir -p ${base_dir}/environments/${env}
   echo "Initialized env '$env'"
 }
 
 list-env() {
-  local base_dir=${CLAMP_BASE_DIR:-$HOME/.clamp}
+  local base_dir=${CLENV_BASE_DIR:-$HOME/.clenv}
   ls -1 ${base_dir}/environments/
 }
 
@@ -36,12 +36,12 @@ exit 0
 
 =head1 NAME
 
-B<clamp> - Command-Line Assembly of Modules or Packages
+B<clenv> - Command-Line Assembly of Modules or Packages
 
 =head1 SYNOPSYS
 
-    clamp init-env $env
-    clamp list-env
+    clenv init-env $env
+    clenv list-env
 
 =head1 DESCRIPTION
 
