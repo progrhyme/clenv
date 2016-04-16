@@ -1,3 +1,9 @@
+## 0.0.5 (2016/4/16)
+
+Minor Feature:
+
+- `clam -h|--help`, `clam -v|--version`
+
 ## 0.0.4 (2016/4/16)
 
 Change:
