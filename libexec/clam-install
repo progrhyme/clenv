@@ -3,6 +3,11 @@
 set -euo pipefail
 
 source ${CLENV_ROOT}/lib/util.shrc
+source ${CLENV_ROOT}/lib/clamfile.shrc
+
+if [[ ${CLAM_DEBUG:-} ]]; then
+  set -x
+fi
 
 git_sync() {
   local _target=$1
@@ -83,7 +88,15 @@ else
 fi
 
 dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
-dest_module=${dest_dir}/"${module}"
+dest_module=${dest_dir}/${module}
+
+clamfile.init
+installed=$(clamfile.find $module)
+if [[ "$installed" ]]; then
+  echo "$installed already installed. Quit." >&2
+  cleanup
+  exit 1
+fi
 
 cp -rp $workdir $dest_module
 echo "Sync ${module} into ${dest_module}"
@@ -112,6 +125,8 @@ install_materials() {
 
 install_materials "${executables:-}" $bin_dir
 install_materials "${resources:-}" $lib_dir
+
+clamfile.add $module $version
 
 echo "Installed ${module} ${version}"
 

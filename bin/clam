@@ -4,6 +4,8 @@ set -euo pipefail
 
 version="0.0.5"
 
+source ${CLENV_ROOT}/lib/clamfile.shrc
+
 if [[ ${CLAM_DEBUG:-} ]]; then
   set -x
 fi
@@ -23,9 +25,20 @@ version() {
   exit 0
 }
 
-command=${1:-install}
+list() {
+  clamfile.init
+  clamfile.list
+  exit 0
+}
 
-case "$command" in
+case "$1" in
+  "install" | "--install" )
+    command=install
+    shift
+    ;;
+  "list" | "-l" | "--list" )
+    list
+    ;;
   "-h" | "--help" )
     help
     ;;
@@ -35,6 +48,9 @@ case "$command" in
   "--version" )
     version --verbose
     ;;
+  * )
+    command=install
+    ;;
 esac
 
 if [[ -z ${CLENV_ENVIRONMENT:-} ]]; then
@@ -42,10 +58,7 @@ if [[ -z ${CLENV_ENVIRONMENT:-} ]]; then
   exit 1
 fi
 
-if [[ $1 = "install" ]]; then
-  shift
-fi
-exec ${CLENV_ROOT}/libexec/clam-install "$@"
+exec ${CLENV_ROOT}/libexec/clam-${command} "$@"
 
 exit 0
 
@@ -63,6 +76,10 @@ Install:
 
     clam [install] git://<repos-url>
     clam [install] /path/to/module
+
+List installed modules:
+
+    clam list|-l|--list
 
 Help:
 
