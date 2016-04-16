@@ -44,27 +44,35 @@ esac
 bin_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/bin
 lib_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/lib
 cd $dest_module
+
 if [ -r clam.spec ];then
+  unset version
+  unset executables
+  unset resources
   source clam.spec
 else
   echo "clam.spec file not found! Can't install." >&2
   exit 1
 fi
 
-for f in $(ls $executables); do
-  if [ -f $f ]; then
-    cp -p $f ${bin_dir}/
-  else
-    echo "Not exist $f Skip." >&2
+install_materials() {
+  local _src=$1
+  local _dest=$2
+  local f
+
+  if [[ $_src ]]; then
+    for f in $(\ls -1 $_src); do
+      if [ -f $f ]; then
+        cp -p $f ${_dest}/
+      else
+        echo "Not exist $f Skip." >&2
+      fi
+    done
   fi
-done
-for f in $(ls $resources); do
-  if [ -f $f ]; then
-    cp -p $f ${lib_dir}/
-  else
-    echo "Not exist $f Skip." >&2
-  fi
-done
+}
+
+install_materials "${executables:-}" $bin_dir
+install_materials "${resources:-}" $lib_dir
 
 echo "Installed ${module} ${version:-}"
 
