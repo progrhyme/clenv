@@ -26,8 +26,7 @@ Executable files:
 
 ## Requirements
 
-- Bash
-  - Maybe it works for Zsh, but I'm not sure.
+- Bash or Zsh
 
 ## Install
 
