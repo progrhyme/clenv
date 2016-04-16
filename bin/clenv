@@ -17,7 +17,6 @@ init-env() {
     mkdir -p $env_dir/{bin,lib,modules}
     echo "Initialized env '$env'"
   fi
-  ln -s ${env_dir}/bin ${base_dir}/shims
 }
 
 list-env() {
@@ -35,6 +34,12 @@ use() {
   fi
 
   echo "export CLENV_ENVIRONMENT=$env;"
+  echo "
+if [ -s ${base_dir}/shims ]; then
+  rm -f ${base_dir}/shims;
+fi;
+ln -sf ${env_dir}/bin ${base_dir}/shims;
+"
   lib_dir=${env_dir}/lib
   for rc in $(ls $lib_dir/); do
     echo "source $lib_dir/$rc;"
