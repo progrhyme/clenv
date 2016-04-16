@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 source ${CLENV_ROOT}/lib/util.shrc
 
 git_sync() {
@@ -29,9 +31,20 @@ if [ -d $target ]; then
     echo "clam.spec file not found! Can't install." >&2
     exit 1
   fi
+else
+  case "$target" in
+    *:* )
+      mode=git
+      ;;
+    * )
+      ;;
+  esac
 fi
 
-mode=${mode:-git}
+if [[ -z $mode ]]; then
+  echo "Don't know how to install $target" >&2
+  exit 1
+fi
 if [[ -z $module ]]; then
   module=${target##*/}
   module=${module%.git}

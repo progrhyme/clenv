@@ -2,15 +2,49 @@
 
 set -euo pipefail
 
+version="0.0.4"
+
 if [[ ${CLAM_DEBUG:-} ]]; then
   set -x
 fi
+
+help() {
+  pod2text $0
+  exit 1
+}
+
+version() {
+  local _verbose=${1:-}
+  if [[ $_verbose ]]; then
+    echo "clam - version $version"
+  else
+    echo $version
+  fi
+  exit 0
+}
+
+command=${1:-install}
+
+case "$command" in
+  "-h" | "--help" )
+    help
+    ;;
+  "-v" )
+    version
+    ;;
+  "--version" )
+    version --verbose
+    ;;
+esac
 
 if [[ -z ${CLENV_ENVIRONMENT:-} ]]; then
   echo "CLENV_ENVIRONMENT not set! Please run 'clenv use \$env'." >&2
   exit 1
 fi
 
+if [[ $1 = "install" ]]; then
+  shift
+fi
 exec ${CLENV_ROOT}/libexec/clam-install "$@"
 
 exit 0
@@ -25,9 +59,18 @@ B<clam> - clenv module manager
 
 =head1 SYNOPSYS
 
-    # Install or Update
-    clam git://<repos-url>
-    clam /path/to/module
+Install:
+
+    clam [install] git://<repos-url>
+    clam [install] /path/to/module
+
+Help:
+
+    clam -h|--help
+
+Show version:
+
+    clam -v|--version
 
 =head1 DESCRIPTION
 

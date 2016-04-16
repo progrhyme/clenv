@@ -56,8 +56,12 @@ ln -sf ${env_dir}/bin ${base_dir}/shims;
 }
 
 version() {
-  echo $version
-  exit 0
+  local _verbose=${1:-}
+  if [[ $_verbose ]]; then
+    echo "clenv - version $version"
+  else
+    echo $version
+  fi
 }
 
 command=${1:-}
@@ -66,8 +70,11 @@ case "$command" in
   "" | "-h" | "--help" )
     help
     ;;
-  "-v" | "--version" )
+  "-v" )
     version
+    ;;
+  "--version" )
+    version --verbose
     ;;
   * )
     shift
