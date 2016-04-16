@@ -1,0 +1,7 @@
+abspath() {
+  local _file=$1
+  local _absdir=$(cd $(dirname $_file) && pwd)
+  echo ${_absdir}/$(basename $_file)
+}
+
+# vim:set ft=sh :

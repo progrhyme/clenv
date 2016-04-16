@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+
+source ${CLENV_ROOT}/lib/util.shrc
+
+git_sync() {
+  local _target=$1
+  local _dest=$2
+
+  if [ -d $_dest ]; then
+    cd $_dest
+    git pull
+  else
+    git clone --depth=1 ${_target} ${_dest}
+    cd $_dest
+  fi
+}
+
+target=$1
+
+mode=""
+module=""
+
+if [ -d $target ]; then
+  _path=$(cd $target; pwd)
+  module=${_path##*/}
+  if [ -r ${target}/clam.spec ]; then
+    mode=copy
+  else
+    echo "clam.spec file not found! Can't install." >&2
+    exit 1
+  fi
+fi
+
+mode=${mode:-git}
+if [[ -z $module ]]; then
+  module=${target##*/}
+  module=${module%.git}
+fi
+
+workdir=${CLENV_ROOT}/tmp/${module}
+
+echo "Sync ${target} into working directory"
+case "$mode" in
+  "copy" )
+    cp -rp $target $workdir
+    ;;
+  "git" )
+    git_sync $target $workdir
+    ;;
+  * )
+    ;;
+esac
+
+cleanup() {
+  rm -rf $workdir
+}
+
+cd $workdir
+
+if [ -r clam.spec ];then
+  unset version
+  unset executables
+  unset resources
+  source clam.spec
+  version=${version:-noversion}
+else
+  echo "clam.spec file not found! Can't install." >&2
+  cleanup
+  exit 1
+fi
+
+dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
+dest_module=${dest_dir}/"${module}"
+
+cp -rp $workdir $dest_module
+echo "Sync ${module} into ${dest_module}"
+cd $dest_module
+cleanup
+
+bin_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/bin
+lib_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/lib
+
+install_materials() {
+  local _src=$1
+  local _dest=$2
+  local f __path
+
+  if [[ $_src ]]; then
+    for f in $(\ls -1 $_src); do
+      if [ -f $f ]; then
+        __path=$(abspath $f)
+        ln -s ${__path} ${_dest}/
+      else
+        echo "Not exist $f Skip." >&2
+      fi
+    done
+  fi
+}
+
+install_materials "${executables:-}" $bin_dir
+install_materials "${resources:-}" $lib_dir
+
+echo "Installed ${module} ${version}"
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clam-install> - Install C<clam> modules
+
+=head1 SYNOPSYS
+
+    # Install or Update
+    clam-install git://<repos-url>
+    clam-install /path/to/module
+
+
+=head1 DESCRIPTION
+
+This script installs C<clam> modules.
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 YASUTAKE Kiyoshi
+
+=cut
+
+__EOF__
+
