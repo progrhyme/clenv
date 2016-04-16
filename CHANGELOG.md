@@ -1,3 +1,9 @@
+## 0.1.0 (2016/4/16)
+
+Feature:
+
+- `clam uninstall|-u <MODULE>` to uninstall module.
+
 ## 0.0.6 (2016/4/16)
 
 Feature:
