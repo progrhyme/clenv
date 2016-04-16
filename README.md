@@ -2,39 +2,40 @@
 
 Command-Line modules manager.
 
-Table of Contents:
+### Table of Contents
 
-* [clenv](#clenv)
-  * [Components](#components)
-  * [Requirements](#requirements)
-  * [Install](#install)
-  * [Configure](#configure)
+* [Components](#components)
+* [Requirements](#requirements)
+* [Install](#install)
+* [Configure](#configure)
+* [clam](#clam)
   * [Install modules by clam](#install-modules-by-clam)
   * [clam\.spec](#clamspec)
+  * [Uninstall clam modules](#uninstall-clam-modules)
 * [AUTHORS](#authors)
 * [LICENSE](#license)
 
-## Components
+# Components
 
 Executable files:
 
 - `clenv`
-  - CLI to control _clenv_ environments. An environment contains sets of modules.
+  - CLI to control _clenv_ environments. An environment contains sets of _clam_ modules.
 - `clam`
-  - CLI to install _clam_ modules for _clenv_.  
+  - CLI to manage _clam_ modules for _clenv_.  
   A module consists of some executable files and shell resources, and must have a `clam.spec` file which tells meta info of the module.
 
-## Requirements
+# Requirements
 
 - Bash or Zsh
 
-## Install
+# Install
 
 ```
 git clone https://github.com/key-amb/clenv.git ~/.clenv
 ```
 
-## Configure
+# Configure
 
 `clenv` needs some environment variables for now.
 
@@ -64,6 +65,8 @@ This command does followings:
 - Set environment variable `CLENV_ENVIRONMENT` to `$env`.
 - Create symlink `$CLENV_ROOT/shims` of `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin`.
 
+# clam
+
 ## Install modules by `clam`
 
 ```
@@ -90,6 +93,14 @@ resources=lib/*
 
 With this `clam.spec`, `clam` installs `bin/*` files under `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin/`.  
 And it installs `lib/*` files under `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/`.
+
+## Uninstall clam modules
+
+```
+clam -u|uninstall <MODULE>
+```
+
+`clam -h` tells you other usages of the script.
 
 # AUTHORS
 
