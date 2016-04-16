@@ -2,18 +2,71 @@
 
 set -euo pipefail
 
-repos=$1
-module=${repos##*/}
-module=${module%.git}
+git_sync() {
+  local _target=$1
+  local _dest=$2
+
+  if [ -d $_dest ]; then
+    cd $_dest
+    git pull
+  else
+    git clone ${_target} ${_dest}
+    cd $_dest
+  fi
+}
+
+target=$1
+if [ -d $target -a -r ${target}/clam.spec ]; then
+  mode=copy
+  _path=$(cd $target; pwd)
+  module=${_path##*/}
+else
+  mode=git
+  module=${target##*/}
+  module=${module%.git}
+fi
+
 dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
 dest_module=${dest_dir}/${module}
 
-if [ -d $dest_module ]; then
-  cd $dest_module
-  git pull
+echo "Sync ${target} into ${dest_module}"
+case "$mode" in
+  "copy" )
+    cp -rp $target $dest_module
+    ;;
+  "git" )
+    git_sync $target $dest_module
+    ;;
+  * )
+    ;;
+esac
+
+bin_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/bin
+lib_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/lib
+cd $dest_module
+if [ -r clam.spec ];then
+  source clam.spec
 else
-  git clone $1 ${dest_module}
+  echo "clam.spec file not found! Can't install." >&2
+  exit 1
 fi
+
+for f in $(ls $executables); do
+  if [ -f $f ]; then
+    cp -p $f ${bin_dir}/
+  else
+    echo "Not exist $f Skip." >&2
+  fi
+done
+for f in $(ls $resources); do
+  if [ -f $f ]; then
+    cp -p $f ${lib_dir}/
+  else
+    echo "Not exist $f Skip." >&2
+  fi
+done
+
+echo "Installed ${module} $version"
 
 exit 0
 
@@ -29,6 +82,7 @@ B<clam> - clenv module manager
 
     # Install or Update
     clam git://<repos-url>
+    clam /path/to/module
 
 =head1 DESCRIPTION
 
