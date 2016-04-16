@@ -16,6 +16,13 @@ clamfile.add() {
   echo -e "$module\t$version" >> $__clamfile_path
 }
 
+clamfile.remove() {
+  local module=$1
+  local _tmpfile=${__clamfile_path}.tmp
+  awk "\$1 != \"$module\"" $__clamfile_path > $_tmpfile
+  mv $_tmpfile $__clamfile_path
+}
+
 clamfile.list() {
   cat $__clamfile_path
 }

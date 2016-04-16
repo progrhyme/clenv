@@ -36,6 +36,10 @@ case "$1" in
     command=install
     shift
     ;;
+  "uninstall" | "-u" | "--uninstall" )
+    command=uninstall
+    shift
+    ;;
   "list" | "-l" | "--list" )
     list
     ;;
@@ -80,6 +84,10 @@ Install:
 List installed modules:
 
     clam list|-l|--list
+
+Uninstall:
+
+    clam uninstall|-u <MODULE>
 
 Help:
 

@@ -1,0 +1,71 @@
+#!/bin/bash
+
+set -euo pipefail
+
+source ${CLENV_ROOT}/lib/util.shrc
+source ${CLENV_ROOT}/lib/clamfile.shrc
+
+if [[ ${CLAM_DEBUG:-} ]]; then
+  set -x
+fi
+
+module=$1
+
+clamfile.init
+installed=$(clamfile.find $module | tr '\t' ' ')
+if [[ -z "$installed" ]]; then
+  echo "$module is not installed." >&2
+  exit 1
+fi
+
+echo "Uninstall $installed"
+
+env_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}
+bin_dir=${env_dir}/bin
+lib_dir=${env_dir}/lib
+module_dir=${env_dir}/modules/${module}
+
+for l in $(find $bin_dir $lib_dir -maxdepth 1 -type l); do
+  _origin=$(readlink $l)
+  if [[ "$_origin" =~ ${module_dir} ]]; then
+    rm -f $l
+  fi
+done
+
+rm -rf $module_dir
+clamfile.remove $module
+
+echo "...Done."
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clam-uninstall> - Uninstall C<clam> modules
+
+=head1 SYNOPSYS
+
+    clam-uninstall <MODULE>
+
+=head1 DESCRIPTION
+
+Uninstall C<clam> modules.
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 YASUTAKE Kiyoshi
+
+=cut
+
+__EOF__
+
