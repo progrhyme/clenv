@@ -1,3 +1,13 @@
+## 0.0.6 (2016/4/16)
+
+Feature:
+
+- `clam list|-l` to list installed modules.
+
+Change:
+
+- `clam`: Don't install module already installed.
+
 ## 0.0.5 (2016/4/16)
 
 Minor Feature:
