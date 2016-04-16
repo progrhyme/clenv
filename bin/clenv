@@ -23,7 +23,14 @@ init-env() {
 
 list-env() {
   local base_dir=${CLENV_ROOT:-$HOME/.clenv}
-  ls -1 ${base_dir}/environments/
+  local env
+  for env in $(\ls -1 ${base_dir}/environments/); do
+    local pref=" "
+    if [[ $env = $CLENV_ENVIRONMENT ]]; then
+      pref="*"
+    fi
+    echo "${pref} ${env}"
+  done
 }
 
 use() {
