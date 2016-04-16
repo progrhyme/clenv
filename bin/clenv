@@ -10,19 +10,35 @@ help() {
 init-env() {
   local env=${1:-${CLENV_ENVIRONMENT:-default}}
   local base_dir=${CLENV_ROOT:-$HOME/.clenv}
-  mkdir -p ${base_dir}/shims
   local env_dir=${base_dir}/environments/${env}
   if [ -d $env_dir ]; then
     echo "'$env' already exists"
   else
-    mkdir -p $env_dir/{bin,modules}
+    mkdir -p $env_dir/{bin,lib,modules}
     echo "Initialized env '$env'"
   fi
+  ln -s ${env_dir}/bin ${base_dir}/shims
 }
 
 list-env() {
   local base_dir=${CLENV_ROOT:-$HOME/.clenv}
   ls -1 ${base_dir}/environments/
+}
+
+use() {
+  local env=${1:-default}
+  local base_dir=${CLENV_ROOT:-$HOME/.clenv}
+  local env_dir=${base_dir}/environments/${env}
+  if [[ ! -d $env_dir ]]; then
+    echo "'$env' don't exist!" >&2
+    return 1
+  fi
+
+  export CLENV_ENVIRONMENT=$env
+  lib_dir=${env_dir}/lib
+  for rc in $(ls $lib_dir/); do
+    echo "source $lib_dir/$rc"
+  done
 }
 
 command=${1:-}
