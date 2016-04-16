@@ -91,7 +91,7 @@ dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
 dest_module=${dest_dir}/${module}
 
 clamfile.init
-installed=$(clamfile.find $module)
+installed=$(clamfile.find $module | tr '\t' ' ')
 if [[ "$installed" ]]; then
   echo "$installed already installed. Quit." >&2
   cleanup
