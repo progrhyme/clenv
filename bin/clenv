@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+version="0.0.1"
+
 help() {
   pod2text $0
   exit 1
@@ -46,14 +48,25 @@ ln -sf ${env_dir}/bin ${base_dir}/shims;
   done
 }
 
+version() {
+  echo $version
+  exit 0
+}
+
 command=${1:-}
 
-if [[ -z $command || $command =~ ^-?-h.* ]]; then
-  help
-fi
-
-shift
-${command} "$@"
+case "$command" in
+  "" | "-h" | "--help" )
+    help
+    ;;
+  "-v" | "--version" )
+    version
+    ;;
+  * )
+    shift
+    ${command} "$@"
+    ;;
+esac
 
 exit 0
 
@@ -63,12 +76,22 @@ exit 0
 
 =head1 NAME
 
-B<clenv> - Command-Line Assembly of Modules or Packages
+B<clenv> - CLI to control I<clenv> environments
 
 =head1 SYNOPSYS
 
     clenv init-env $env
     clenv list-env
+
+    eval $(clenv use $env)
+
+Help:
+
+    clenv -h|--help|help
+
+Show version:
+
+    clenv -v|--version|version
 
 =head1 DESCRIPTION
 
