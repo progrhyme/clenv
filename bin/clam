@@ -43,6 +43,7 @@ esac
 
 bin_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/bin
 lib_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/lib
+
 cd $dest_module
 
 if [ -r clam.spec ];then
@@ -55,15 +56,22 @@ else
   exit 1
 fi
 
+abspath() {
+  local _file=$1
+  local _absdir=$(cd $(dirname $_file) && pwd)
+  echo ${_absdir}/$(basename $_file)
+}
+
 install_materials() {
   local _src=$1
   local _dest=$2
-  local f
+  local f _path
 
   if [[ $_src ]]; then
     for f in $(\ls -1 $_src); do
       if [ -f $f ]; then
-        cp -p $f ${_dest}/
+        _path=$(abspath $f)
+        ln -s ${_path} ${_dest}/
       else
         echo "Not exist $f Skip." >&2
       fi
