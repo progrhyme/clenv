@@ -1,3 +1,11 @@
+## 0.0.4 (2016/4/16)
+
+Change:
+
+- `clam`:
+  - Does not copy executables and resources into `bin/` or `lib/`.
+  Creates symlinks of them instead.
+
 ## 0.0.3 (2016/4/16)
 
 Minor Improve:
