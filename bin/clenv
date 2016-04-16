@@ -34,10 +34,10 @@ use() {
     return 1
   fi
 
-  export CLENV_ENVIRONMENT=$env
+  echo "export CLENV_ENVIRONMENT=$env;"
   lib_dir=${env_dir}/lib
   for rc in $(ls $lib_dir/); do
-    echo "source $lib_dir/$rc"
+    echo "source $lib_dir/$rc;"
   done
 }
 
