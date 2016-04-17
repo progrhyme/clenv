@@ -17,10 +17,11 @@ fi
 
 cat $catalog | while read line; do
   info=($(echo $line))
+  name=${info[0]}
   src=${info[2]}
   echo "Install $src..."
   set +e
-  ${CLENV_ROOT}/libexec/clam-install $src
+  ${CLENV_ROOT}/libexec/clam-install $name,$src
   set -e
 done
 
