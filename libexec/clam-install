@@ -150,6 +150,8 @@ B<clam-install> - Install C<clam> modules
     clam-install git://<repos-url>
     clam-install /path/to/module
 
+    # Install from Clamfile
+    clam-install -r|--require [Clamfile]
 
 =head1 DESCRIPTION
 
