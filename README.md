@@ -1,6 +1,10 @@
 # clenv
 
-Command-Line modules manager.
+A toolkit to organize Command-Line environments including executable scripts and
+shell resource files.  
+This toolkit modularize command-line executables or shell resources and manages
+them in the way which might looks like [rbenv](https://github.com/rbenv/rbenv)
+or [plenv](https://github.com/tokuhirom/plenv).
 
 ### Table of Contents
 
@@ -11,6 +15,7 @@ Command-Line modules manager.
 * [clam](#clam)
   * [Install modules by clam](#install-modules-by-clam)
   * [clam\.spec](#clamspec)
+  * [Install from Clamfile](#install-from-clamfile)
   * [Uninstall clam modules](#uninstall-clam-modules)
 * [AUTHORS](#authors)
 * [LICENSE](#license)
@@ -93,6 +98,21 @@ resources=lib/*
 
 With this `clam.spec`, `clam` installs `bin/*` files under `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin/`.  
 And it installs `lib/*` files under `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/`.
+
+## Install from `Clamfile`
+
+When you want to install many modules at once, you can write down their info in
+one `Clamfile`.  
+A `Clamfile` looks like below:
+
+```
+bash-bb         0.2.0    https://github.com/key-amb/bash-bb.git
+bash-pathctl    0.9.1    https://github.com/key-amb/bash-pathctl.git
+```
+
+When you run `clam install-deps [Clamfile]` in the directory in which there is this
+file named `Clamfile`, it installs `bash-bb` and `bash-pathctl` into your `clenv`
+from the URLs.
 
 ## Uninstall clam modules
 
