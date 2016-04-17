@@ -82,8 +82,8 @@ B<clam> - clenv module manager
 
 Install:
 
-    clam [install] git://<repos-url>
-    clam [install] /path/to/module
+    clam [install] git://<repos-url> [-f|--force]
+    clam [install] /path/to/module [-f|--force]
 
 Install from C<Clamfile>:
 

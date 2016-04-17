@@ -45,6 +45,11 @@ parse_arg $1
 
 clamdb.init
 
+force_install=""
+if [[ ${2:-} = "-f" || ${2:-} = "--force" ]]; then
+  force_install="true"
+fi
+
 check_installed() {
   local _name=$1
   local _version=$2
@@ -67,7 +72,7 @@ check_installed() {
   fi
 }
 
-if [[ $tgt_name ]]; then
+if [[ $tgt_name && -z $force_install ]]; then
   check_installed $tgt_name $tgt_ver
 fi
 
@@ -141,11 +146,18 @@ fi
 dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
 dest_module=${dest_dir}/${name}
 
-check_installed $name $version cleanup
-
-if [[ $installed ]]; then
-  echo "$installed installed. Update to $version."
-  ${CLENV_ROOT}/libexec/clam-uninstall $name
+if [[ $force_install ]]; then
+  installed=$(clamdb.find $name | tr '\t' ' ')
+  if [[ $installed ]]; then
+    echo "$installed installed. Force re-install."
+    ${CLENV_ROOT}/libexec/clam-uninstall $name
+  fi
+else
+  check_installed $name $version cleanup
+  if [[ $installed ]]; then
+    echo "$installed installed. Update to $version."
+    ${CLENV_ROOT}/libexec/clam-uninstall $name
+  fi
 fi
 
 cp -rp $workdir $dest_module
@@ -194,12 +206,15 @@ B<clam-install> - Install C<clam> modules
 
 Install or Update:
 
-    clam-install git://<repos-url>
-    clam-install /path/to/module
+    clam-install git://<repos-url> [OPTION]
+    clam-install /path/to/module [OPTION]
     # With module name
     clam-install foo,git://<repos-url>
     # With module name and version
     clam-install foo,git://<repos-url>,1.1
+
+    # Force install
+    clam-install git://<repos-url> -f|--force
 
     # Install from Clamfile
     clam-install -r|--require [Clamfile]
