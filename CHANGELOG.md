@@ -1,4 +1,12 @@
-## 0.1.2 (2016/4/17)
+## 0.1.3 (2016/4/17)
+
+Fix Bug:
+
+- **v0.1.2**
+  - `clam install`: Module name would be always 'module' unless set by `clam.spec`
+    param.
+
+## 0.1.2 **obsolete** (2016/4/17)
 
 Enhancement:
 
