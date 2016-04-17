@@ -1,3 +1,10 @@
+## 0.1.6 (2016/4/18)
+
+Enhancement:
+
+- `clam install`:
+  - Add `-f|--force` option to force install; i.e. re-install if installed.
+
 ## 0.1.5 (2016/4/18)
 
 Enhancement:
