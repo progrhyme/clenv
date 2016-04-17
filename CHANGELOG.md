@@ -1,3 +1,12 @@
+## 0.1.4 (2016/4/17)
+
+Enhancement:
+
+- `clam`:
+  - Check installation before fetch source repository by using module name passed
+    as argument in the format of `<name>,<sourceUrl>`.
+  - `clam install-deps` uses this feature to save cost of fetching repository.
+
 ## 0.1.3 (2016/4/17)
 
 Fix Bug:
