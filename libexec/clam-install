@@ -85,7 +85,7 @@ if [ -r clam.spec ];then
   unset executables
   unset resources
   source clam.spec
-  name=${name:-module}
+  name=${name:-$module}
   version=${version:-noversion}
 else
   echo "clam.spec file not found! Can't install." >&2
