@@ -10,38 +10,69 @@ if [[ ${CLAM_DEBUG:-} ]]; then
 fi
 
 git_sync() {
-  local _target=$1
+  local _src=$1
   local _dest=$2
 
   if [ -d $_dest ]; then
     cd $_dest
     git pull
   else
-    git clone --depth=1 ${_target} ${_dest}
+    git clone --depth=1 ${_src} ${_dest}
     cd $_dest
   fi
 }
 
-target=$1
+parse_arg() {
+  local arg=$1
+  local ifs=$IFS
+  IFS=","
+  set -- $arg
+  tgt_name=$1
+  tgt_src=${2:-$1}
+  if [[ $tgt_name = $tgt_src ]]; then
+    tgt_name=""
+  fi
+}
 
-if [[ $target = "-r" || $target = "--require" ]]; then
+parse_arg $1
+
+if [[ $tgt_src = "-r" || $tgt_src = "--require" ]]; then
   exec ${CLENV_ROOT}/libexec/clam-install-deps ${2:-}
+fi
+
+clamdb.init
+
+check_installed() {
+  local _name=$1
+  local _post_process=${2:-}
+  local _installed=$(clamdb.find $_name | tr '\t' ' ')
+  if [[ $_installed ]]; then
+    echo "$_installed already installed. Quit." >&2
+    if [[ $_post_process ]]; then
+      $_post_process
+    fi
+    exit 1
+  fi
+}
+
+if [[ $tgt_name ]]; then
+  check_installed $tgt_name
 fi
 
 mode=""
 module=""
 
-if [ -d $target ]; then
-  _path=$(cd $target; pwd)
+if [ -d $tgt_src ]; then
+  _path=$(cd $tgt_src; pwd)
   module=${_path##*/}
-  if [ -r ${target}/clam.spec ]; then
+  if [ -r ${tgt_src}/clam.spec ]; then
     mode=copy
   else
     echo "clam.spec file not found! Can't install." >&2
     exit 1
   fi
 else
-  case "$target" in
+  case "$tgt_src" in
     *:* )
       mode=git
       ;;
@@ -51,23 +82,23 @@ else
 fi
 
 if [[ -z $mode ]]; then
-  echo "Don't know how to install $target" >&2
+  echo "Don't know how to install $tgt_src" >&2
   exit 1
 fi
 if [[ -z $module ]]; then
-  module=${target##*/}
+  module=${tgt_src##*/}
   module=${module%.git}
 fi
 
 workdir=${CLENV_ROOT}/tmp/${module}
 
-echo "Sync ${target} into working directory"
+echo "Sync ${tgt_src} into working directory"
 case "$mode" in
   "copy" )
-    cp -rp $target $workdir
+    cp -rp $tgt_src $workdir
     ;;
   "git" )
-    git_sync $target $workdir
+    git_sync $tgt_src $workdir
     ;;
   * )
     ;;
@@ -96,13 +127,7 @@ fi
 dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
 dest_module=${dest_dir}/${name}
 
-clamdb.init
-installed=$(clamdb.find $name | tr '\t' ' ')
-if [[ "$installed" ]]; then
-  echo "$installed already installed. Quit." >&2
-  cleanup
-  exit 1
-fi
+check_installed $name cleanup
 
 cp -rp $workdir $dest_module
 echo "Sync ${module} into ${dest_module}"
@@ -148,9 +173,12 @@ B<clam-install> - Install C<clam> modules
 
 =head1 SYNOPSYS
 
-    # Install or Update
+Install or Update:
+
     clam-install git://<repos-url>
     clam-install /path/to/module
+    # With module name
+    clam-install foo,git://<repos-url>
 
     # Install from Clamfile
     clam-install -r|--require [Clamfile]
