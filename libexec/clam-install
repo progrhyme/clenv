@@ -3,6 +3,7 @@
 set -euo pipefail
 
 source ${CLENV_ROOT}/lib/util.shrc
+source ${CLENV_ROOT}/lib/version.shrc
 source ${CLENV_ROOT}/lib/clamdb.shrc
 
 if [[ ${CLAM_DEBUG:-} ]]; then
@@ -22,6 +23,10 @@ git_sync() {
   fi
 }
 
+if [[ $1 = "-r" || $1 = "--require" ]]; then
+  exec ${CLENV_ROOT}/libexec/clam-install-deps ${2:-}
+fi
+
 parse_arg() {
   local arg=$1
   local ifs=$IFS
@@ -29,6 +34,7 @@ parse_arg() {
   set -- $arg
   tgt_name=$1
   tgt_src=${2:-$1}
+  tgt_ver=${3:-0}
   if [[ $tgt_name = $tgt_src ]]; then
     tgt_name=""
   fi
@@ -37,27 +43,32 @@ parse_arg() {
 
 parse_arg $1
 
-if [[ $tgt_src = "-r" || $tgt_src = "--require" ]]; then
-  exec ${CLENV_ROOT}/libexec/clam-install-deps ${2:-}
-fi
-
 clamdb.init
 
 check_installed() {
   local _name=$1
-  local _post_process=${2:-}
-  local _installed=$(clamdb.find $_name | tr '\t' ' ')
-  if [[ $_installed ]]; then
-    echo "$_installed already installed. Quit." >&2
-    if [[ $_post_process ]]; then
-      $_post_process
+  local _version=$2
+  local _post_process=${3:-}
+  installed=$(clamdb.find $_name | tr '\t' ' ')
+  local _ary i_name i_ver
+  if [[ $installed ]]; then
+    _ary=($(echo $installed))
+    i_name=${_ary[0]}
+    i_ver=${_ary[1]}
+    version_compare $i_ver $_version comp_ret
+    if (( $comp_ret >= 0 )); then
+      echo "$installed already installed. Quit." >&2
+      if [[ $_post_process ]]; then
+        $_post_process
+      fi
+      exit 1
     fi
-    exit 1
+    unset comp_ret
   fi
 }
 
 if [[ $tgt_name ]]; then
-  check_installed $tgt_name
+  check_installed $tgt_name $tgt_ver
 fi
 
 mode=""
@@ -120,7 +131,7 @@ if [ -r clam.spec ];then
   unset resources
   source clam.spec
   name=${name:-$module}
-  version=${version:-noversion}
+  version=${version:-0}
 else
   echo "clam.spec file not found! Can't install." >&2
   cleanup
@@ -130,7 +141,12 @@ fi
 dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
 dest_module=${dest_dir}/${name}
 
-check_installed $name cleanup
+check_installed $name $version cleanup
+
+if [[ $installed ]]; then
+  echo "$installed installed. Update to $version."
+  ${CLENV_ROOT}/libexec/clam-uninstall $name
+fi
 
 cp -rp $workdir $dest_module
 echo "Sync ${module} into ${dest_module}"
@@ -162,7 +178,7 @@ install_materials "${resources:-}" $lib_dir
 
 clamdb.add $name $version
 
-echo "Installed ${name} ${version}"
+echo "Installed ${name} - ver ${version}"
 
 exit 0
 
@@ -182,6 +198,8 @@ Install or Update:
     clam-install /path/to/module
     # With module name
     clam-install foo,git://<repos-url>
+    # With module name and version
+    clam-install foo,git://<repos-url>,1.1
 
     # Install from Clamfile
     clam-install -r|--require [Clamfile]
