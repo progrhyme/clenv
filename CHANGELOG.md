@@ -1,3 +1,14 @@
+## 0.1.1 (2016/4/17)
+
+Feature:
+
+- `clam install-deps [Clamfile]` to install modules from `Clamfile`.
+
+Change:
+
+- Rename `Clamfile` in `${CLENV_ROOT}/environments/${env}/` to `Clamdb.txt` because
+  the format is different from `Clamfile` above.
+
 ## 0.1.0 (2016/4/16)
 
 Feature:
