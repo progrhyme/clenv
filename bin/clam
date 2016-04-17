@@ -40,6 +40,10 @@ case "$1" in
     command=uninstall
     shift
     ;;
+  "install-deps" | "--install-deps" )
+    command=install-deps
+    shift
+    ;;
   "list" | "-l" | "--list" )
     list
     ;;
@@ -80,6 +84,11 @@ Install:
 
     clam [install] git://<repos-url>
     clam [install] /path/to/module
+
+Install from C<Clamfile>:
+
+    clam install-deps|--install-deps [Clamfile]
+    clam [install] -r|--require [Clamfile]
 
 List installed modules:
 

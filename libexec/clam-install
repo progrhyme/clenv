@@ -24,6 +24,10 @@ git_sync() {
 
 target=$1
 
+if [[ $target = "-r" || $target = "--require" ]]; then
+  exec ${CLENV_ROOT}/libexec/clam-install-deps ${2:-}
+fi
+
 mode=""
 module=""
 

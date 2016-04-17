@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ ${CLAM_DEBUG:-} ]]; then
+  set -x
+fi
+
+catalog=${1:-Clamfile}
+
+if [[ -r $catalog ]]; then
+  echo "Start installing modules in ${catalog}"
+else
+  echo "File '${catalog}' not found. Can't install." >&2
+  exit 1
+fi
+
+cat $catalog | while read line; do
+  info=($(echo $line))
+  src=${info[2]}
+  echo "Install $src..."
+  set +e
+  ${CLENV_ROOT}/libexec/clam-install $src
+  set -e
+done
+
+echo "Finished."
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clam-install-deps> - Install C<clam> modules from C<Clamfile>
+
+=head1 SYNOPSYS
+
+    clam-install-deps [Clamfile]
+
+=head1 DESCRIPTION
+
+This script installs C<clam> modules from a catalog file which lists info of modules.
+Default catalog file is "Clamfile" in current directory.
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+The MIT License (MIT)
+
+Copyright (c) 2016 YASUTAKE Kiyoshi
+
+=cut
+
+__EOF__
+
