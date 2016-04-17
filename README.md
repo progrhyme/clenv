@@ -91,13 +91,17 @@ So you need again `eval $(clenv use $env)` to load them.
 A `clam.spec` file looks like below:
 
 ```
+name=foo
 version=0.1
 executables=bin/*
 resources=lib/*
 ```
 
-With this `clam.spec`, `clam` installs `bin/*` files under `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin/`.  
-And it installs `lib/*` files under `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/`.
+With this `clam.spec`, `clam` installs as followings:
+
+- Copy module directory as `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/modules/foo/` directory.
+- Create symlinks of `bin/*` files in `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin/` directory.
+- Create symlinks of `lib/*` files in `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/` directory.
 
 ## Install from `Clamfile`
 
