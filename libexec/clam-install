@@ -32,6 +32,7 @@ parse_arg() {
   if [[ $tgt_name = $tgt_src ]]; then
     tgt_name=""
   fi
+  IFS=$ifs
 }
 
 parse_arg $1
