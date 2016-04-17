@@ -60,16 +60,18 @@ if [[ $tgt_name ]]; then
 fi
 
 mode=""
-module=""
+module=$tgt_name
 
 if [ -d $tgt_src ]; then
   _path=$(cd $tgt_src; pwd)
-  module=${_path##*/}
   if [ -r ${tgt_src}/clam.spec ]; then
     mode=copy
   else
     echo "clam.spec file not found! Can't install." >&2
     exit 1
+  fi
+  if [[ -z $module ]]; then
+    module=${_path##*/}
   fi
 else
   case "$tgt_src" in
