@@ -3,7 +3,7 @@
 set -euo pipefail
 
 source ${CLENV_ROOT}/lib/util.shrc
-source ${CLENV_ROOT}/lib/clamfile.shrc
+source ${CLENV_ROOT}/lib/clamdb.shrc
 
 if [[ ${CLAM_DEBUG:-} ]]; then
   set -x
@@ -11,8 +11,8 @@ fi
 
 module=$1
 
-clamfile.init
-installed=$(clamfile.find $module | tr '\t' ' ')
+clamdb.init
+installed=$(clamdb.find $module | tr '\t' ' ')
 if [[ -z "$installed" ]]; then
   echo "$module is not installed." >&2
   exit 1
@@ -33,7 +33,7 @@ for l in $(find $bin_dir $lib_dir -maxdepth 1 -type l); do
 done
 
 rm -rf $module_dir
-clamfile.remove $module
+clamdb.remove $module
 
 echo "...Done."
 

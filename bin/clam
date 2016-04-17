@@ -4,7 +4,7 @@ set -euo pipefail
 
 version="0.1.0"
 
-source ${CLENV_ROOT}/lib/clamfile.shrc
+source ${CLENV_ROOT}/lib/clamdb.shrc
 
 if [[ ${CLAM_DEBUG:-} ]]; then
   set -x
@@ -26,8 +26,8 @@ version() {
 }
 
 list() {
-  clamfile.init
-  clamfile.list
+  clamdb.init
+  clamdb.list
   exit 0
 }
 
