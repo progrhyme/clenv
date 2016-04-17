@@ -1,3 +1,12 @@
+## 0.1.5 (2016/4/18)
+
+Enhancement:
+
+- `clam`:
+  - `install`: Re-install (update) module when it's newer than installed one.
+  - `install-deps`: Pass module version in `Clamfile` to `clam-install` command
+    to update (re-install) newer modules.
+
 ## 0.1.4 (2016/4/17)
 
 Enhancement:
