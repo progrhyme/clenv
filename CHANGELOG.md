@@ -1,3 +1,10 @@
+## 0.1.7 (2016/4/18)
+
+Feature:
+
+- `clenv switch $env` - Unlike `clenv use $env`, it does not load shell resources
+  in the environment. All other functions are same with `clenv use $env`.
+
 ## 0.1.6 (2016/4/18)
 
 Enhancement:
