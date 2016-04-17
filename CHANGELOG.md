@@ -1,3 +1,10 @@
+## 0.1.2 (2016/4/17)
+
+Enhancement:
+
+- `clam.spec`:
+  - Enable to specify `name` param in `clam.spec`.
+
 ## 0.1.1 (2016/4/17)
 
 Feature:
