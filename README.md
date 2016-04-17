@@ -72,19 +72,24 @@ This command does followings:
 
 # clam
 
+`clam -h` may show you what are not described here in more detail.
+
 ## Install modules by `clam`
 
 ```
 # Install local module
-clam /path/to/module
+clam [install] /path/to/module [-f|--force]
 
 # Install from git repository
-clam https://github.com/foo/bar.git
+clam [install] https://github.com/foo/bar.git [-f|--force]
 ```
 
 Executable files in modules can be run after installed.  
 But shell resources are not automatically loaded.  
 So you need again `eval $(clenv use $env)` to load them.
+
+`clam` does not install when newer or latest module is already installed.  
+You can specify `-f|--force` option to force re-install it.
 
 ## `clam.spec`
 
@@ -123,8 +128,6 @@ from the URLs.
 ```
 clam -u|uninstall <MODULE>
 ```
-
-`clam -h` tells you other usages of the script.
 
 # AUTHORS
 
