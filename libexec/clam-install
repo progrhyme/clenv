@@ -80,10 +80,12 @@ cleanup() {
 cd $workdir
 
 if [ -r clam.spec ];then
+  unset name
   unset version
   unset executables
   unset resources
   source clam.spec
+  name=${name:-module}
   version=${version:-noversion}
 else
   echo "clam.spec file not found! Can't install." >&2
@@ -92,10 +94,10 @@ else
 fi
 
 dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
-dest_module=${dest_dir}/${module}
+dest_module=${dest_dir}/${name}
 
 clamdb.init
-installed=$(clamdb.find $module | tr '\t' ' ')
+installed=$(clamdb.find $name | tr '\t' ' ')
 if [[ "$installed" ]]; then
   echo "$installed already installed. Quit." >&2
   cleanup
@@ -130,9 +132,9 @@ install_materials() {
 install_materials "${executables:-}" $bin_dir
 install_materials "${resources:-}" $lib_dir
 
-clamdb.add $module $version
+clamdb.add $name $version
 
-echo "Installed ${module} ${version}"
+echo "Installed ${name} ${version}"
 
 exit 0
 
