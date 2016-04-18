@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-version="0.1.7"
+version="0.1.8"
 
 source ${CLENV_ROOT}/lib/clenv.shrc
 

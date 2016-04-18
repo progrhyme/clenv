@@ -1,3 +1,12 @@
+## 0.1.8 (2016/4/18)
+
+Change:
+
+- `clenv`:
+  - Add `lib/clenv.shrc` which provides shell functions for `clenv`.
+  - `eval $(clenv use $env)` => `clenv::use $env`
+  - `eval $(clenv switch $env)` => `clenv::switch $env`
+
 ## 0.1.7 (2016/4/18)
 
 Feature:
