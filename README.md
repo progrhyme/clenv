@@ -128,12 +128,12 @@ one `Clamfile`.
 A `Clamfile` looks like below:
 
 ```
-bash-bb         0.2.0    https://github.com/key-amb/bash-bb.git
-bash-pathctl    0.9.1    https://github.com/key-amb/bash-pathctl.git
+bb         0.2.0    https://github.com/key-amb/bash-bb.git
+pathctl    0.9.1    https://github.com/key-amb/bash-pathctl.git
 ```
 
 When you run `clam install-deps [Clamfile]` in the directory in which there is this
-file named `Clamfile`, it installs `bash-bb` and `bash-pathctl` into your `clenv`
+file named `Clamfile`, it installs `bb` and `pathctl` into your `clenv`
 from the URLs.
 
 ## Uninstall clam modules
