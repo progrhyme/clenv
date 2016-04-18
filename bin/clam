@@ -26,8 +26,8 @@ version() {
 }
 
 list() {
-  clamdb.init
-  clamdb.list
+  clamdb_init
+  clamdb_list
   exit 0
 }
 
