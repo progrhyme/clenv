@@ -1,3 +1,10 @@
+## 0.1.9 (2016/4/19)
+
+Change:
+
+- `clenv` - rename shell functions for portability:
+  - `clenv::use` => `clenv_use`, `clenv::switch` => `clenv_switch`
+
 ## 0.1.8 (2016/4/18)
 
 Change:
