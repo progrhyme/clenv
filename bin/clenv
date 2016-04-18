@@ -12,11 +12,11 @@ help() {
 }
 
 init-env() {
-  clenv::init-env ${1:-${CLENV_ENVIRONMENT:-}}
+  clenv_init_env ${1:-${CLENV_ENVIRONMENT:-}}
 }
 
 list-env() {
-  clenv::list-env
+  clenv_list_env
 }
 
 version() {
@@ -67,9 +67,9 @@ Switch environments:
     source lib/clenv.shrc
 
     # switch and load libraries
-    clenv::use $env
+    clenv_use $env
     # only switch
-    clenv::switch $env
+    clenv_switch $env
 
 List environments:
 
