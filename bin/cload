@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ ${CLOAD_DEBUG:-} ]]; then
+  set -x
+fi
+
+shrc=$1
+if [ -r $shrc ]; then
+  echo ". $shrc"
+  exit 0
+fi
+if [[ -z ${CLOAD_PATH:-} ]]; then
+  echo "CLOAD_PATH not set. Can't load ${shrc}." >&2
+  exit 1
+fi
+for srch in $(echo $CLOAD_PATH | tr ':' ' '); do
+  if [ -r ${srch}/${shrc} ]; then
+    echo ". ${srch}/${shrc}"
+    exit 0
+  fi
+done
+echo "Can't load ${shrc}." >&2
+
+exit 1
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<cload> - Load shell resource from C<$CLOAD_PATH>
+
+=head1 SYNOPSYS
+
+    eval "$(cload foo.shrc)"
+
+=head1 DESCRIPTION
+
+TBD
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 YASUTAKE Kiyoshi
+
+=cut
+
+__EOF__
+

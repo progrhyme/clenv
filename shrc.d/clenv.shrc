@@ -17,6 +17,7 @@ clenv_switch() {
     rm -f ${__clenv_base_dir}/shims
   fi
   ln -sf ${_env_dir}/bin ${__clenv_base_dir}/shims
+  export CLOAD_PATH=${_env_dir}/lib
   set +x
 }
 
