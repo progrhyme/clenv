@@ -43,7 +43,7 @@ parse_arg() {
 
 parse_arg $1
 
-clamdb.init
+clamdb_init
 
 force_install=""
 if [[ ${2:-} = "-f" || ${2:-} = "--force" ]]; then
@@ -54,7 +54,7 @@ check_installed() {
   local _name=$1
   local _version=$2
   local _post_process=${3:-}
-  installed=$(clamdb.find $_name | tr '\t' ' ')
+  installed=$(clamdb_find $_name | tr '\t' ' ')
   local _ary i_name i_ver
   if [[ $installed ]]; then
     _ary=($(echo $installed))
@@ -147,7 +147,7 @@ dest_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/modules
 dest_module=${dest_dir}/${name}
 
 if [[ $force_install ]]; then
-  installed=$(clamdb.find $name | tr '\t' ' ')
+  installed=$(clamdb_find $name | tr '\t' ' ')
   if [[ $installed ]]; then
     echo "$installed installed. Force re-install."
     ${CLENV_ROOT}/libexec/clam-uninstall $name
@@ -188,7 +188,7 @@ install_materials() {
 install_materials "${executables:-}" $bin_dir
 install_materials "${resources:-}" $lib_dir
 
-clamdb.add $name $version
+clamdb_add $name $version
 
 echo "Installed ${name} - ver ${version}"
 
