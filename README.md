@@ -65,22 +65,22 @@ And to use `clam` modules in the environment, run either of following shell func
 
 ```
 # Switch symlinks
-clenv::switch $env
+clenv_switch $env
 # Load libraries in addition
-clenv::use $env
+clenv_use $env
 ```
 
-`clenv::switch $env` does followings:
+`clenv_switch $env` does followings:
 
 - Set environment variable `CLENV_ENVIRONMENT` to `$env`.
 - Create symlink `$CLENV_ROOT/shims` of `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin`.
 
-`clenv::use $env` does followings **in addition** to `clenv::switch $env`:
+`clenv_use $env` does followings **in addition** to `clenv_switch $env`:
 
 - Load shell resources by `source` command which are in
   `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib` directory.
 
-To use `clenv::use` or `clenv::switch` is your choice.  
+To use `clenv_use` or `clenv_switch` is your choice.  
 Use one which you prefer.
 
 # clam
