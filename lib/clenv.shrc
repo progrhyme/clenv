@@ -1,0 +1,115 @@
+_clenv::init() {
+  __clenv_default_env="default"
+  __clenv_base_dir=${CLENV_ROOT:-$HOME/.clenv}
+}
+
+clenv::init-env() {
+  _clenv::init
+  if [[ ${CLENV_DEBUG:-} ]]; then
+    set -x
+  fi
+  local _env=${1:-${__clenv_default_env}}
+  local _env_dir=${__clenv_base_dir}/environments/${_env}
+  if [ -d $_env_dir ]; then
+    echo "'$_env' already exists" >&2
+  else
+    mkdir -p $_env_dir/{bin,lib,modules}
+    echo "Initialized env '$_env'"
+  fi
+  set +x
+}
+
+clenv::switch() {
+  _clenv::init
+  if [[ ${CLENV_DEBUG:-} ]]; then
+    set -x
+  fi
+  local _env=${1:-${__clenv_default_env}}
+  local _env_dir=${__clenv_base_dir}/environments/${_env}
+  if [[ ! -d $_env_dir ]]; then
+    echo "'$_env' doesn't exist!" >&2
+    set +x
+    return 1
+  fi
+  export CLENV_ENVIRONMENT=$_env
+  if [ -s ${__clenv_base_dir}/shims ]; then
+    rm -f ${__clenv_base_dir}/shims
+  fi
+  ln -sf ${_env_dir}/bin ${__clenv_base_dir}/shims
+  set +x
+}
+
+clenv::use() {
+  _clenv::init
+  local _env=${1:-${__clenv_default_env}}
+  local _env_dir=${__clenv_base_dir}/environments/${_env}
+  clenv::switch $_env
+  local _lib_dir=${_env_dir}/lib
+  local rc
+  for rc in $(ls $_lib_dir/); do
+    source $_lib_dir/$rc
+  done
+}
+
+clenv::list-env() {
+  _clenv::init
+  local _env
+  for _env in $(\ls -1 ${__clenv_base_dir}/environments/); do
+    local _pref=" "
+    if [[ $_env = $CLENV_ENVIRONMENT ]]; then
+      _pref="*"
+    fi
+    echo "${_pref} ${_env}"
+  done
+}
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clenv.shrc> - Provides core functions for C<clenv>
+
+=head1 SYNOPSYS
+
+    . clenv.shrc
+
+Initialize an environment:
+
+    clenv::init-env $env
+
+Switch environments:
+
+    # switch and load libraries
+    clenv::use $env
+    # only switch
+    clenv::switch $env
+
+List environments:
+
+    clenv::list-env
+
+=head1 DESCRIPTION
+
+TBD.
+
+=head1 SEE ALSO
+
+L<bin/clenv>
+
+=head1 AUTHORS
+
+YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 YASUTAKE Kiyoshi
+
+=cut
+
+__EOF__
+
+# vim:set ft=sh :

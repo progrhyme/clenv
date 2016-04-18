@@ -4,8 +4,7 @@ set -euo pipefail
 
 version="0.1.7"
 
-default_env="default"
-base_dir=${CLENV_ROOT:-$HOME/.clenv}
+source ${CLENV_ROOT}/lib/clenv.shrc
 
 help() {
   pod2text $0
@@ -13,52 +12,11 @@ help() {
 }
 
 init-env() {
-  local env=${1:-${CLENV_ENVIRONMENT:-$default_env}}
-  local env_dir=${base_dir}/environments/${env}
-  if [ -d $env_dir ]; then
-    echo "'$env' already exists"
-  else
-    mkdir -p $env_dir/{bin,lib,modules}
-    echo "Initialized env '$env'"
-  fi
+  clenv::init-env ${1:-${CLENV_ENVIRONMENT:-}}
 }
 
 list-env() {
-  local env
-  for env in $(\ls -1 ${base_dir}/environments/); do
-    local pref=" "
-    if [[ $env = $CLENV_ENVIRONMENT ]]; then
-      pref="*"
-    fi
-    echo "${pref} ${env}"
-  done
-}
-
-use() {
-  local env=${1:-$default_env}
-  local env_dir=${base_dir}/environments/${env}
-  switch $env
-
-  lib_dir=${env_dir}/lib
-  for rc in $(ls $lib_dir/); do
-    echo "source $lib_dir/$rc;"
-  done
-}
-
-switch() {
-  local env=${1:-$default_env}
-  local env_dir=${base_dir}/environments/${env}
-  if [[ ! -d $env_dir ]]; then
-    echo "'$env' don't exist!" >&2
-    return 1
-  fi
-  echo "export CLENV_ENVIRONMENT=$env;"
-  echo "
-if [ -s ${base_dir}/shims ]; then
-  rm -f ${base_dir}/shims;
-fi;
-ln -sf ${env_dir}/bin ${base_dir}/shims;
-"
+  clenv::list-env
 }
 
 version() {
@@ -106,10 +64,12 @@ Initialize an environment:
 
 Switch environments:
 
+    source lib/clenv.shrc
+
     # switch and load libraries
-    eval $(clenv use $env)
+    clenv::use $env
     # only switch
-    eval $(clenv switch $env)
+    clenv::switch $env
 
 List environments:
 
@@ -126,6 +86,10 @@ Show version:
 =head1 DESCRIPTION
 
 TBD.
+
+=head1 SEE ALSO
+
+L<lib/clenv.shrc>
 
 =head1 AUTHORS
 
