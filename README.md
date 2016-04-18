@@ -42,12 +42,14 @@ git clone https://github.com/key-amb/clenv.git ~/.clenv
 
 # Configure
 
-`clenv` needs some environment variables for now.
+To use `clenv`, it is required to set some environment variables and load shell
+functions.
 
 ```
 export CLENV_ROOT=$HOME/.clenv
 export PATH="$HOME/.clenv/shims:$PATH"
 export PATH="$HOME/.clenv/bin:$PATH"
+source ${CLENV_ROOT}/lib/clenv.shrc
 ```
 
 Then, you need initialize an environment.
@@ -59,25 +61,26 @@ clenv init-env [$env]
 This command creates `$CLENV_ROOT/environments/$env`.  
 Default `$env` is `"default"`.
 
-And to use `clam` modules in the environment, run either of following commands:
+And to use `clam` modules in the environment, run either of following shell functions:
 
 ```
-eval $(clenv use $env)
-
-eval $(clenv switch $env)
+# Switch symlinks
+clenv::switch $env
+# Load libraries in addition
+clenv::use $env
 ```
 
-`clenv switch $env` does followings:
+`clenv::switch $env` does followings:
 
 - Set environment variable `CLENV_ENVIRONMENT` to `$env`.
 - Create symlink `$CLENV_ROOT/shims` of `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin`.
 
-`clenv use $env` does followings **in addition** to `clenv switch $env`:
+`clenv::use $env` does followings **in addition** to `clenv::switch $env`:
 
 - Load shell resources by `source` command which are in
   `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib` directory.
 
-To use `clenv use` or `clenv switch` is your choice.  
+To use `clenv::use` or `clenv::switch` is your choice.  
 Use one which you prefer.
 
 # clam
