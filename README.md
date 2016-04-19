@@ -129,7 +129,7 @@ A `Clamfile` looks like below:
 
 ```
 bb         0.2.0    https://github.com/key-amb/bash-bb.git
-pathctl    0.9.1    https://github.com/key-amb/bash-pathctl.git
+pathctl    1.0.0    https://github.com/key-amb/sh-pathctl.git
 ```
 
 When you run `clam install-deps [Clamfile]` in the directory in which there is this
