@@ -2,9 +2,36 @@
 
 set -euo pipefail
 
+version="0.1.10"
+
 if [[ ${CLOAD_DEBUG:-} ]]; then
   set -x
 fi
+
+help() {
+  pod2text $0
+  exit 1
+}
+
+version() {
+  local _verbose=${1:-}
+  if [[ $_verbose ]]; then
+    echo "cload - version $version"
+  else
+    echo $version
+  fi
+  exit 0
+}
+
+case "$1" in
+  "-h" | "--help" )
+    help ;;
+  "-v" )
+    version ;;
+  "--version" )
+    version --verbose ;;
+  * ) ;;
+esac
 
 shrc=$1
 if [ -r $shrc ]; then
