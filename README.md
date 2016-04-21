@@ -49,7 +49,7 @@ functions.
 export CLENV_ROOT=$HOME/.clenv
 export PATH="$HOME/.clenv/shims:$PATH"
 export PATH="$HOME/.clenv/bin:$PATH"
-source ${CLENV_ROOT}/lib/clenv.shrc
+source ${CLENV_ROOT}/shrc.d/clenv.shrc
 ```
 
 Then, you need initialize an environment.

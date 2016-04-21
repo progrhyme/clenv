@@ -4,7 +4,7 @@ set -euo pipefail
 
 version="0.1.9"
 
-source ${CLENV_ROOT}/lib/clenv.shrc
+source ${CLENV_ROOT}/shrc.d/clenv.shrc
 
 help() {
   pod2text $0
@@ -12,11 +12,31 @@ help() {
 }
 
 init-env() {
-  clenv_init_env ${1:-${CLENV_ENVIRONMENT:-}}
+  _clenv_init
+  if [[ ${CLENV_DEBUG:-} ]]; then
+    set -x
+  fi
+  local _env=${1:-${__clenv_default_env}}
+  local _env_dir=${__clenv_base_dir}/environments/${_env}
+  if [ -d $_env_dir ]; then
+    echo "'$_env' already exists" >&2
+  else
+    mkdir -p $_env_dir/{bin,lib,modules}
+    echo "Initialized env '$_env'"
+  fi
+  set +x
 }
 
 list-env() {
-  clenv_list_env
+  _clenv_init
+  local _env
+  for _env in $(\ls -1 ${__clenv_base_dir}/environments/); do
+    local _pref=" "
+    if [[ $_env = $CLENV_ENVIRONMENT ]]; then
+      _pref="*"
+    fi
+    echo "${_pref} ${_env}"
+  done
 }
 
 version() {
@@ -64,7 +84,7 @@ Initialize an environment:
 
 Switch environments:
 
-    source lib/clenv.shrc
+    . shrc.d/clenv.shrc
 
     # switch and load libraries
     clenv_use $env
@@ -89,7 +109,7 @@ TBD.
 
 =head1 SEE ALSO
 
-L<lib/clenv.shrc>
+L<shrc.d/clenv.shrc>
 
 =head1 AUTHORS
 

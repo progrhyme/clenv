@@ -3,22 +3,6 @@ _clenv_init() {
   __clenv_base_dir=${CLENV_ROOT:-$HOME/.clenv}
 }
 
-clenv_init_env() {
-  _clenv_init
-  if [[ ${CLENV_DEBUG:-} ]]; then
-    set -x
-  fi
-  local _env=${1:-${__clenv_default_env}}
-  local _env_dir=${__clenv_base_dir}/environments/${_env}
-  if [ -d $_env_dir ]; then
-    echo "'$_env' already exists" >&2
-  else
-    mkdir -p $_env_dir/{bin,lib,modules}
-    echo "Initialized env '$_env'"
-  fi
-  set +x
-}
-
 clenv_switch() {
   _clenv_init
   if [[ ${CLENV_DEBUG:-} ]]; then
@@ -51,33 +35,17 @@ clenv_use() {
   done
 }
 
-clenv_list_env() {
-  _clenv_init
-  local _env
-  for _env in $(\ls -1 ${__clenv_base_dir}/environments/); do
-    local _pref=" "
-    if [[ $_env = $CLENV_ENVIRONMENT ]]; then
-      _pref="*"
-    fi
-    echo "${_pref} ${_env}"
-  done
-}
-
 : <<'__EOF__'
 
 =encoding utf8
 
 =head1 NAME
 
-B<clenv.shrc> - Provides core functions for C<clenv>
+B<clenv.shrc> - Provides shell functions for C<clenv>
 
 =head1 SYNOPSYS
 
-    . clenv.shrc
-
-Initialize an environment:
-
-    clenv_init_env $env
+    . shrc.d/clenv.shrc
 
 Switch environments:
 
@@ -85,10 +53,6 @@ Switch environments:
     clenv_use $env
     # only switch
     clenv_switch $env
-
-List environments:
-
-    clenv_list_env
 
 =head1 DESCRIPTION
 
