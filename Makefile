@@ -3,7 +3,7 @@
 VERSION := $(shell bin/clenv -v)
 
 test:
-	shove -r t -v -s /bin/bash
+	shove -r t/bash -v -s /bin/bash
 
 release:
 	git commit -m $(VERSION)
