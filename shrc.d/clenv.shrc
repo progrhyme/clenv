@@ -2,12 +2,12 @@ __clenv_default_env="default"
 __clenv_base_dir=${CLENV_ROOT:-"$HOME/.clenv"}
 
 clenv_switch() {
-  if [[ ${CLENV_DEBUG:-} ]]; then
+  if [ "${CLENV_DEBUG:-}" ]; then
     set -x
   fi
   local _env=${1:-${__clenv_default_env}}
   local _env_dir=${__clenv_base_dir}/environments/${_env}
-  if [[ ! -d $_env_dir ]]; then
+  if [ ! -d $_env_dir ]; then
     echo "'$_env' doesn't exist!" >&2
     set +x
     return 1
@@ -27,7 +27,7 @@ clenv_use() {
   local _lib_dir=${_env_dir}/lib
   local rc
   for rc in $(ls $_lib_dir/); do
-    source $_lib_dir/$rc
+    . $_lib_dir/$rc
   done
 }
 
