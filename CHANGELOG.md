@@ -1,3 +1,10 @@
+## 0.1.10 (2016/4/21)
+
+Change:
+
+- `lib/clenv.shrc` is now `shrc.d/clenv.shrc`. The only shrc file to be loaded
+  to use **clenv** at this time.
+
 ## 0.1.9 (2016/4/19)
 
 Change:
