@@ -1,3 +1,10 @@
+## 0.1.11 (2016/4/22)
+
+Feature:
+
+- Implement `cload` script to load shell resource files from `environments/$env/lib/`
+  for executables.
+
 ## 0.1.10 (2016/4/21)
 
 Change:
