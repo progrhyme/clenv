@@ -12,7 +12,6 @@ help() {
 }
 
 init-env() {
-  _clenv_init
   if [[ ${CLENV_DEBUG:-} ]]; then
     set -x
   fi
@@ -28,7 +27,6 @@ init-env() {
 }
 
 list-env() {
-  _clenv_init
   local _env
   for _env in $(\ls -1 ${__clenv_base_dir}/environments/); do
     local _pref=" "

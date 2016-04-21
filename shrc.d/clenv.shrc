@@ -1,10 +1,7 @@
-_clenv_init() {
-  __clenv_default_env="default"
-  __clenv_base_dir=${CLENV_ROOT:-$HOME/.clenv}
-}
+__clenv_default_env="default"
+__clenv_base_dir=${CLENV_ROOT:-"$HOME/.clenv"}
 
 clenv_switch() {
-  _clenv_init
   if [[ ${CLENV_DEBUG:-} ]]; then
     set -x
   fi
@@ -24,7 +21,6 @@ clenv_switch() {
 }
 
 clenv_use() {
-  _clenv_init
   local _env=${1:-${__clenv_default_env}}
   local _env_dir=${__clenv_base_dir}/environments/${_env}
   clenv_switch $_env
