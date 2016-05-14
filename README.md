@@ -3,7 +3,7 @@
 A toolkit to organize Command-Line environments including executable scripts and
 shell resource files.  
 This toolkit modularize command-line executables or shell resources and manages
-them in the way which might looks like [rbenv](https://github.com/rbenv/rbenv)
+them in the way which might look like [rbenv](https://github.com/rbenv/rbenv)
 or [plenv](https://github.com/tokuhirom/plenv).
 
 ### Table of Contents
@@ -28,11 +28,13 @@ Executable files:
   - CLI to control _clenv_ environments. An environment contains sets of _clam_ modules.
 - `clam`
   - CLI to manage _clam_ modules for _clenv_.  
-  A module consists of some executable files and shell resources, and must have a `clam.spec` file which tells meta info of the module.
+  A module consists of some executable files and shell resources, and must have
+  a `clam.spec` file which tells meta info of the module.
 
 # Requirements
 
-- Bash or Zsh
+- _Bash_ or _Zsh_
+- Hopefully work with _sh_ or _dash_ as well
 
 # Install
 
@@ -47,9 +49,9 @@ functions.
 
 ```
 export CLENV_ROOT=$HOME/.clenv
-export PATH="$HOME/.clenv/shims:$PATH"
 export PATH="$HOME/.clenv/bin:$PATH"
-source ${CLENV_ROOT}/shrc.d/clenv.shrc
+export PATH="$HOME/.clenv/shims:$PATH"
+. ${CLENV_ROOT}/shrc.d/clenv.shrc
 ```
 
 Then, you need initialize an environment.
@@ -130,11 +132,14 @@ A `Clamfile` looks like below:
 ```
 bb         0.2.0    https://github.com/key-amb/bash-bb.git
 pathctl    1.0.0    https://github.com/key-amb/sh-pathctl.git
+shove      0.7.2    https://github.com/key-amb/shove.git
 ```
 
 When you run `clam install-deps [Clamfile]` in the directory in which there is this
 file named `Clamfile`, it installs `bb` and `pathctl` into your `clenv`
 from the URLs.
+
+And you can find more clam modules in [example/Clamfile](example/Clamfile).
 
 ## Uninstall clam modules
 
