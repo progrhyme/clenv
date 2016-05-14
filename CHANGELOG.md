@@ -1,3 +1,9 @@
+## 0.1.12 (2016/5/14)
+
+Minor Update:
+
+- Update document and test materials
+
 ## 0.1.11 (2016/4/22)
 
 Feature:
