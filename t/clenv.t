@@ -2,8 +2,7 @@
 
 clenv=${__clenv_base_dir}/bin/clenv
 
-(
-  t_substart "clenv init-env"
+T_SUB "clenv init-env" ((
   (
     $clenv init-env test1 >/dev/null
     $clenv init-env test2 >/dev/null
@@ -13,9 +12,7 @@ clenv=${__clenv_base_dir}/bin/clenv
   t_is $? 0 "exists test1 bin"
   test -d ${__clenv_base_dir}/environments/test2/lib
   t_is $? 0 "exists test2 lib"
-  t_subclose
-)
-t_subend "clenv init-env"
+))
 for i in 1 2; do
   rm -rf $__clenv_base_dir/environments/test$i
 done
@@ -41,16 +38,13 @@ EOLIB
 )
 t_subend "clenv_switch"
 
-(
-  t_substart "clenv_use"
+T_SUB "clenv_use" ((
   clenv_use test2
   t_is $CLENV_ENVIRONMENT "test2" "switch to test2"
   _link=$(readlink ${__clenv_base_dir}/shims)
   t_is $_link "${__clenv_base_dir}/environments/test2/bin" "shims linked to test2/bin"
   t_is $__test2_foo "TEST2_FOO" "library loaded"
-  t_subclose
-)
-t_subend "clenv_use"
+))
 
 rm -rf $__clenv_base_dir
 
