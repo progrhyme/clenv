@@ -1,7 +1,7 @@
 .PHONY: test release
 
 VERSION := $(shell bin/clenv -v)
-SHELLS  := /bin/sh /usr/local/bin/bash /bin/bash /bin/zsh dash
+SHELLS  := sh bash zsh dash
 
 test:
 	shove -r t/bash -v -s /bin/bash
