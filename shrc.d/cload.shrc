@@ -1,0 +1,90 @@
+export CLOAD_PATH=${CLOAD_PATH:-}
+
+cload_path_push() {
+  local _tgt=$1
+  local _path _p
+  if [ -z "$CLOAD_PATH" ]; then
+    CLOAD_PATH=$_tgt
+    return
+  fi
+  for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
+    [ "$_p" = "$_tgt" ] && continue
+    if [ "$_path" ]; then
+      _path="$_path:$_p"
+    else
+      _path=$_p
+    fi
+  done
+  CLOAD_PATH="$_path:$_tgt"
+}
+
+cload_path_unshift() {
+  local _tgt=$1
+  local _path _p
+  if [ -z "$CLOAD_PATH" ]; then
+    CLOAD_PATH=$_tgt
+    return
+  fi
+  for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
+    [ "$_p" = "$_tgt" ] && continue
+    if [ "$_path" ]; then
+      _path="$_path:$_p"
+    else
+      _path=$_p
+    fi
+  done
+  CLOAD_PATH="$_tgt:$_path"
+}
+
+cload_path_del() {
+  local _tgt=$1
+  local _path _p
+  for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
+    [ "$_p" = "$_tgt" ] && continue
+    if [ "$_path" ]; then
+      _path="$_path:$_p"
+    else
+      _path=$_p
+    fi
+  done
+  CLOAD_PATH=$_path
+}
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<cload.shrc> - Shell functions to manipulate C<CLOAD_PATH>
+
+=head1 SYNOPSYS
+
+    . shrc.d/cload.shrc
+    cload_path_push    /path/to/lib
+    cload_path_unshift /path/to/lib
+    cload_path_del     /path/to/lib
+
+=head1 DESCRIPTION
+
+Shell functions to manipulate C<CLOAD_PATH>
+
+=head1 SEE ALSO
+
+L<bin/cload>
+
+=head1 AUTHORS
+
+IKEDA Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 IKEDA Kiyoshi
+
+=cut
+
+__EOF__
+
+# vim:set ft=sh :
