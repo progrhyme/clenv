@@ -23,6 +23,21 @@ version() {
   exit 0
 }
 
+load_shrc() {
+  local _base=$1
+  local _path=$2
+  local _src=$(
+    find $_path -maxdepth 1 \
+      -name ${_base} -o -name ${_base}.sh -o -name ${_base}.shrc \
+      | head -1
+  )
+  if [[ ${_src} ]]; then
+    echo ". ${_src}"
+    return
+  fi
+  return 1
+}
+
 case "$1" in
   "-h" | "--help" )
     help ;;
@@ -43,10 +58,7 @@ if [[ -z ${CLOAD_PATH:-} ]]; then
   exit 1
 fi
 for srch in $(echo $CLOAD_PATH | tr ':' ' '); do
-  if [ -r ${srch}/${shrc} ]; then
-    echo ". ${srch}/${shrc}"
-    exit 0
-  fi
+  load_shrc $shrc $srch && exit 0
 done
 echo "Can't load ${shrc}." >&2
 
@@ -62,11 +74,14 @@ B<cload> - Load shell resource from C<$CLOAD_PATH>
 
 =head1 SYNOPSYS
 
-    eval "$(cload foo.shrc)"
+    # Load 'foo' or 'foo.sh' or 'foo.shrc'
+    eval "$(cload foo)"
 
 =head1 DESCRIPTION
 
-TBD
+Print command to load specified shell resource file.
+The file is searched from C<$CLOAD_PATH> which contains some directories in the
+filesystem.
 
 =head1 AUTHORS
 
