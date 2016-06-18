@@ -6,7 +6,7 @@ SHELLS  := sh bash zsh dash
 test:
 	shove -r t/bash -v -s /bin/bash
 	set -e; \
-	for sh in $(SHELLS); do shove t/clenv.t -v -s $$sh; done
+	for sh in $(SHELLS); do shove t/*.t -v -s $$sh; done
 
 release:
 	git commit -m $(VERSION)
