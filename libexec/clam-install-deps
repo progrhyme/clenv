@@ -49,11 +49,11 @@ Default catalog file is "Clamfile" in current directory.
 
 =head1 AUTHORS
 
-YASUTAKE Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+IKEDA Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
 
 The MIT License (MIT)
 
-Copyright (c) 2016 YASUTAKE Kiyoshi
+Copyright (c) 2016 IKEDA Kiyoshi
 
 =cut
 
