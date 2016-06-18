@@ -1,3 +1,9 @@
+## 0.2.1 (2016/6/18)
+
+Feature:
+
+- Implement `cllib` shell function as an alternative to `cload` script
+
 ## 0.2.0 (2016/6/18)
 
 Feature:
