@@ -17,6 +17,7 @@ or [plenv](https://github.com/tokuhirom/plenv).
   * [clam\.spec](#clamspec)
   * [Install from Clamfile](#install-from-clamfile)
   * [Uninstall clam modules](#uninstall-clam-modules)
+* [cload](#cload)
 * [AUTHORS](#authors)
 * [LICENSE](#license)
 
@@ -30,6 +31,8 @@ Executable files:
   - CLI to manage _clam_ modules for _clenv_.  
   A module consists of some executable files and shell resources, and must have
   a `clam.spec` file which tells meta info of the module.
+- `cload`
+  - CLI to load shell resources using _CLOAD_PATH_ environment variable.
 
 # Requirements
 
@@ -146,6 +149,36 @@ And you can find more clam modules in [example/Clamfile](example/Clamfile).
 ```
 clam -u|uninstall <MODULE>
 ```
+
+# cload
+
+Command `cload` loads shell resources using `.` (or `source` in bash/zsh) shell
+function.  
+
+If you have already configured **clenv**,
+following code loads _mylib.sh(rc)_ file under `$CLENV_ROOT/environments/$env/lib/`
+directory.
+
+```
+eval $(cload mylib)
+```
+
+And file name _mylib_ is also fine.
+
+`cload` searches files under the directories specified by environment variable **CLOAD_PATH**.  
+`clenv_switch` sets `CLOAD_PATH` according to target `CLENV_ENVIRONMENT` you are going to switch to.
+
+`cload` itself is independent from _clenv_.  
+You can use `cload` out of _clenv_ in the following way:
+
+```
+. ${CLENV_ROOT}/shrc.d/cload.shrc
+cload_path_push /path/to/lib
+eval $(cload mylib)
+```
+
+`cload.shrc` provides some shell functions to manipulate `CLOAD_PATH`.  
+For more information, run `pod2text shrc.d/cload.shrc`.
 
 # AUTHORS
 
