@@ -1,3 +1,16 @@
+## 0.2.0 (2016/6/18)
+
+Feature:
+
+- Add `shrc.d/cload.shrc` to manipulate CLOAD_PATH
+
+Improve:
+
+- cload:
+  - Load shell scripts without extention
+- clenv:
+  - Change CLOAD_PATH according to CLENV_ENVIRONMENT on `clenv_switch`
+
 ## 0.1.12 (2016/5/14)
 
 Minor Update:
