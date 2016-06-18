@@ -4,6 +4,9 @@ set -euo pipefail
 
 version="0.2.0"
 
+bin_dir=$(cd $(dirname $0) && pwd)
+source ${bin_dir}/../shrc.d/cload.shrc
+
 if [[ ${CLOAD_DEBUG:-} ]]; then
   set -x
 fi
@@ -23,21 +26,6 @@ version() {
   exit 0
 }
 
-load_shrc() {
-  local _base=$1
-  local _path=$2
-  local _src=$(
-    find $_path -maxdepth 1 \
-      -name ${_base} -o -name ${_base}.sh -o -name ${_base}.shrc \
-      | head -1
-  )
-  if [[ ${_src} ]]; then
-    echo ". ${_src}"
-    return
-  fi
-  return 1
-}
-
 case "$1" in
   "-h" | "--help" )
     help ;;
@@ -49,18 +37,13 @@ case "$1" in
 esac
 
 shrc=$1
-if [ -r $shrc ]; then
-  echo ". $shrc"
+shrc_path=$(cload_search $shrc) || :
+if [[ $shrc_path ]]; then
+  echo ". $shrc_path"
   exit 0
 fi
-if [[ -z ${CLOAD_PATH:-} ]]; then
-  echo "CLOAD_PATH not set. Can't load ${shrc}." >&2
-  exit 1
-fi
-for srch in $(echo $CLOAD_PATH | tr ':' ' '); do
-  load_shrc $shrc $srch && exit 0
-done
-echo "Can't load ${shrc}." >&2
+
+echo "Can't load $shrc." >&2
 
 exit 1
 

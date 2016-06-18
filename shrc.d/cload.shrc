@@ -1,5 +1,40 @@
 export CLOAD_PATH=${CLOAD_PATH:-}
 
+__cload_search() {
+  local _base=$1
+  local _path=$2
+  local _src=$(
+    find $_path -mindepth 1 -maxdepth 1 \
+      -name ${_base} -o -name ${_base}.sh -o -name ${_base}.shrc \
+      | head -1
+  )
+  if [ "${_src}" ]; then
+    echo ${_src}
+    return
+  fi
+  return 1
+}
+
+cload_search() {
+  local shrc=$1
+  local _path
+  if [ -r $shrc -a ! -d $shrc ]; then
+    echo "$shrc"
+    return
+  fi
+  for _path in $(echo $CLOAD_PATH | tr ':' ' '); do
+    __cload_search $shrc $_path && return
+  done
+  return 1
+}
+
+cllib() {
+  local shrc=$1
+  local _lib=$(cload_search $shrc)
+  [ -z "$_lib" ] && return 1
+  . $_lib
+}
+
 cload_path_push() {
   local _tgt=$1
   local _path _p
@@ -56,18 +91,26 @@ cload_path_del() {
 
 =head1 NAME
 
-B<cload.shrc> - Shell functions to manipulate C<CLOAD_PATH>
+B<cload.shrc> - Load shell resources with C<CLOAD_PATH>
 
 =head1 SYNOPSYS
 
     . shrc.d/cload.shrc
+
+Manipulate C<CLOAD_PATH>:
+
     cload_path_push    /path/to/lib
     cload_path_unshift /path/to/lib
     cload_path_del     /path/to/lib
 
+Load shell resources:
+
+    cllib mylib.sh
+    . $(cload_search mylib.sh)
+
 =head1 DESCRIPTION
 
-Shell functions to manipulate C<CLOAD_PATH>
+Shell functions to load scripts or manipulate C<CLOAD_PATH>.
 
 =head1 SEE ALSO
 
