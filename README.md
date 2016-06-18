@@ -18,6 +18,7 @@ or [plenv](https://github.com/tokuhirom/plenv).
   * [Install from Clamfile](#install-from-clamfile)
   * [Uninstall clam modules](#uninstall-clam-modules)
 * [cload](#cload)
+  * ["cllib" vs "cload"](#cllib-vs-cload)
 * [AUTHORS](#authors)
 * [LICENSE](#license)
 
@@ -154,6 +155,7 @@ clam -u|uninstall <MODULE>
 
 Command `cload` loads shell resources using `.` (or `source` in bash/zsh) shell
 function.  
+And shell function `cllib` in `shrc.d/cload.shrc` has the same feature.
 
 If you have already configured **clenv**,
 following code loads _mylib.sh(rc)_ file under `$CLENV_ROOT/environments/$env/lib/`
@@ -161,6 +163,8 @@ directory.
 
 ```
 eval $(cload mylib)
+# Or
+cllib mylib
 ```
 
 And file name _mylib_ is also fine.
@@ -175,10 +179,22 @@ You can use `cload` out of _clenv_ in the following way:
 . ${CLENV_ROOT}/shrc.d/cload.shrc
 cload_path_push /path/to/lib
 eval $(cload mylib)
+# Or `cllib mylib`
 ```
 
 `cload.shrc` provides some shell functions to manipulate `CLOAD_PATH`.  
 For more information, run `pod2text shrc.d/cload.shrc`.
+
+## "cllib" vs "cload"
+
+As described in former section, **cllib** is a short-hand way for `eval $(cload <src>)`.
+
+But note that _cllib_ is a shell function so you can't execute it unless you have loaded `shrc.d/cload.shrc`
+in the same shell context.  
+On the other hand, you can run _cload_ in any shell context.
+So _cload_ may be handier in scripting.
+
+Choose convenient one in your situation.
 
 # AUTHORS
 
