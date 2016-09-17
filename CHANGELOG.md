@@ -1,3 +1,14 @@
+## 0.2.2 (2016/9/18)
+
+Improve:
+
+- cload:
+  - Enable to load resources under directories
+
+Feature:
+
+- Add `cload -` argument to load `shrc.d/cload.shrc`
+
 ## 0.2.1 (2016/6/18)
 
 Feature:
