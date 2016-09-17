@@ -3,15 +3,14 @@ export CLOAD_PATH=${CLOAD_PATH:-}
 __cload_search() {
   local _base=$1
   local _path=$2
-  local _src=$(
-    find $_path -mindepth 1 -maxdepth 1 \
-      -name ${_base} -o -name ${_base}.sh -o -name ${_base}.shrc \
-      | head -1
-  )
-  if [ "${_src}" ]; then
-    echo ${_src}
-    return
-  fi
+  local _ext
+  for _ext in "" .sh .shrc; do
+    local _fullpath="${_path}/${_base}${_ext}"
+    if [ -r $_fullpath -a ! -d $_fullpath ]; then
+      echo ${_fullpath}
+      return
+    fi
+  done
   return 1
 }
 
