@@ -5,7 +5,8 @@ set -euo pipefail
 version="0.2.1"
 
 bin_dir=$(cd $(dirname $0) && pwd)
-source ${bin_dir}/../shrc.d/cload.shrc
+lib_dir=$(cd ${bin_dir}/../shrc.d && pwd)
+source ${lib_dir}/cload.shrc
 
 if [[ ${CLOAD_DEBUG:-} ]]; then
   set -x
@@ -33,6 +34,10 @@ case "$1" in
     version ;;
   "--version" )
     version --verbose ;;
+  "-" )
+    echo ". ${lib_dir}/cload.shrc"
+    exit
+    ;;
   * ) ;;
 esac
 
@@ -59,6 +64,9 @@ B<cload> - Load shell resource from C<$CLOAD_PATH>
 
     # Load 'foo' or 'foo.sh' or 'foo.shrc'
     eval "$(cload foo)"
+
+    # Load 'cllib' function on current shell
+    eval "$(cload -)"
 
 =head1 DESCRIPTION
 
