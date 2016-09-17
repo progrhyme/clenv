@@ -1,3 +1,4 @@
+export CLENV_ROOT=.
 . shrc.d/clenv.shrc
 
 clenv=${__clenv_base_dir}/bin/clenv
