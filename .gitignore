@@ -1,4 +1,12 @@
+# Editor tmp files
 *.swp
+
+# Work dir for clenv
 /tmp/
+
+# clenv materials including clam modules
 /environments/
 /shims
+
+# Vendor libraries
+/vendor/
