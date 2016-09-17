@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/key-amb/clenv.svg?branch=master)](https://travis-ci.org/key-amb/clenv)
+
 # clenv
 
 A toolkit to organize Command-Line environments including executable scripts and
