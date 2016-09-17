@@ -74,6 +74,10 @@ Print command to load specified shell resource file.
 The file is searched from C<$CLOAD_PATH> which contains some directories in the
 filesystem.
 
+=head1 SEE ALSO
+
+L<shrc.d/cload.shrc>
+
 =head1 AUTHORS
 
 IKEDA Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
