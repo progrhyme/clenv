@@ -192,9 +192,24 @@ As described in former section, **cllib** is a short-hand way for `eval $(cload 
 But note that _cllib_ is a shell function so you can't execute it unless you have loaded `shrc.d/cload.shrc`
 in the same shell context.  
 On the other hand, you can run _cload_ in any shell context.
-So _cload_ may be handier in scripting.
 
-Choose convenient one in your situation.
+Here is another way: `eval $(cload -)` loads `shrc.d/cload.shrc` in the shell context.
+
+In scripting shell programs, you can go either of following ways to load libraries:
+
+```sh
+# (1)
+eval $(cload foo)
+eval $(cload foo/bar)
+
+# (2)
+eval $(cload -)
+cllib 'foo'
+cllib 'foo/bar'
+```
+
+The former way is simple.
+But the latter has advantage in terms of performance on larger system.
 
 # AUTHORS
 
