@@ -51,7 +51,7 @@ git clone https://github.com/key-amb/clenv.git ~/.clenv
 To use `clenv`, it is required to set some environment variables and load shell
 functions.
 
-```
+```sh
 export CLENV_ROOT=$HOME/.clenv
 export PATH="$HOME/.clenv/bin:$PATH"
 export PATH="$HOME/.clenv/shims:$PATH"
@@ -69,7 +69,7 @@ Default `$env` is `"default"`.
 
 And to use `clam` modules in the environment, run either of following shell functions:
 
-```
+```sh
 # Switch symlinks
 clenv_switch $env
 # Load libraries in addition
@@ -161,7 +161,7 @@ If you have already configured **clenv**,
 following code loads _mylib.sh(rc)_ file under `$CLENV_ROOT/environments/$env/lib/`
 directory.
 
-```
+```sh
 eval $(cload mylib)
 # Or
 cllib mylib
@@ -175,7 +175,7 @@ And file name _mylib_ is also fine.
 `cload` itself is independent from _clenv_.  
 You can use `cload` out of _clenv_ in the following way:
 
-```
+```sh
 . ${CLENV_ROOT}/shrc.d/cload.shrc
 cload_path_push /path/to/lib
 eval $(cload mylib)
