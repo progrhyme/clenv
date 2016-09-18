@@ -114,6 +114,7 @@ List environments:
 
 Commands:
 
+    clenv exec EXECUTABLE   # Execute EXECUTABLE in clenv
     clenv which EXECUTABLE  # Show path of EXECUTABLE in clenv
 
 Help:
