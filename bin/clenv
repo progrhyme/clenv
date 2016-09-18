@@ -124,7 +124,7 @@ Help:
 
 Show version:
 
-    clenv -v|--version|version
+    clenv -v|--version
 
 =head1 DESCRIPTION
 
