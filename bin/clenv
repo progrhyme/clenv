@@ -46,6 +46,8 @@ version() {
   fi
 }
 
+export PATH=${CLENV_ROOT}/libexec:$PATH
+
 command=${1:-}
 
 case "$command" in
@@ -58,9 +60,18 @@ case "$command" in
   "--version" )
     version --verbose
     ;;
-  * )
+  "init-env" | "list-env" )
     shift
     ${command} "$@"
+    ;;
+  * )
+    command_path="$(command -v "clenv-$command" || true)"
+    if [[ -z "${command_path}" ]]; then
+      echo "no such command - '$command'" >&2
+      exit 1
+    fi
+    shift
+    exec "${command_path}" "$@"
     ;;
 esac
 
