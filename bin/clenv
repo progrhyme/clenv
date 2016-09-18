@@ -22,9 +22,7 @@ help() {
 }
 
 init-env() {
-  if [[ ${CLENV_DEBUG:-} ]]; then
-    set -x
-  fi
+  [[ ${CLENV_DEBUG:-} ]] && set -x
   local _env=${1:-${__clenv_default_env}}
   local _env_dir=${__clenv_base_dir}/environments/${_env}
   if [ -d $_env_dir ]; then
