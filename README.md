@@ -119,15 +119,19 @@ A `clam.spec` file looks like below:
 ```
 name=foo
 version=0.1
-executables=bin/*
-resources=lib/*
+executables="bin/foo"
+librarypath="lib"
+#libraries="lib/foo.sh lib/foo/"
 ```
 
 With this `clam.spec`, `clam` installs as followings:
 
-- Copy module directory as `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/modules/foo/` directory.
-- Create symlinks of `bin/*` files in `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin/` directory.
-- Create symlinks of `lib/*` files in `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/` directory.
+- Copy module directory as `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/modules/foo/`
+directory.
+- Create symlinks of `bin/foo` file into `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin/`
+directory.
+- Create symlinks of files or directories just under `lib/` into
+`$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/` directory.
 
 ## Install from `Clamfile`
 
