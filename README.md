@@ -120,6 +120,7 @@ A `clam.spec` file looks like below:
 name=foo
 version=0.1
 executables="bin/foo"
+#executablepath="bin"
 librarypath="lib"
 #libraries="lib/foo.sh lib/foo/"
 ```
@@ -132,6 +133,12 @@ directory.
 directory.
 - Create symlinks of files or directories just under `lib/` into
 `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/` directory.
+
+Alternatives:
+
+- If you have many executables in one directory, you can use `executablepath` field
+instead of `executables`.
+- You can list your `libraries` as space-separated string instead of `librarypath`.
 
 ## Install from `Clamfile`
 
