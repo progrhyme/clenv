@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-version="0.3.1"
+version="0.3.2"
 
 bin_dir=$(cd $(dirname $0) && pwd)
 lib_dir=$(cd ${bin_dir}/../shrc.d && pwd)

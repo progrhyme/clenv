@@ -1,3 +1,10 @@
+## 0.3.2 (2016/9/18)
+
+Enhance:
+
+- clam.spec
+  - Add `executablepath` as loading point for executable files #4
+
 ## 0.3.1 (2016/9/18)
 
 Bug Fix:
