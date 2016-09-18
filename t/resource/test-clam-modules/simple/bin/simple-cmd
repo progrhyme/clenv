@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+. "$(cd $(dirname $0)/../lib && pwd)/simple-lib.sh"
+echo simple is $SIMPLE
+exit 0
