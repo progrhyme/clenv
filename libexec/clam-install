@@ -7,6 +7,9 @@ source ${CLENV_ROOT}/lib/util.shrc
 source ${CLENV_ROOT}/lib/version.shrc
 source ${CLENV_ROOT}/lib/clamdb.shrc
 
+SHIMS_DIR=${CLENV_ROOT}/shims
+SHIM_TEMPLATE=${CLENV_ROOT}/resource/shim-template
+
 git_sync() {
   local _src=$1
   local _dest=$2
@@ -206,6 +209,7 @@ install_materials() {
   local _srcs="$1"
   [[ "$_srcs" ]] || return
   local _dest=$2
+  local _shim=${3:-}
   local f _b __src_path __dest_path
 
   for x in $_srcs; do
@@ -213,7 +217,18 @@ install_materials() {
     __dest_path=${_dest}/${_b}
     __src_path=$(abspath $x)
     ln -s ${__src_path} ${__dest_path}
+    [[ -z "$_shim" ]] || create_shim "${_b}"
   done
+}
+
+create_shim() {
+  local _cmd="$1"
+  local _shim="${SHIMS_DIR}/${_cmd}"
+  [[ -x ${_shim} ]] && return
+
+  install ${SHIM_TEMPLATE} $_shim
+  echo "${_shim} created."
+  return 0
 }
 
 if [[ "${librarypath:-}" ]]; then
@@ -223,7 +238,7 @@ fi
 check_materials "${executables:-}" $bin_dir --executable
 check_materials "${libraries:-}" $lib_dir
 
-install_materials "${executables:-}" $bin_dir
+install_materials "${executables:-}" $bin_dir --shims
 install_materials "${libraries:-}" $lib_dir
 
 clamdb_add $name $version
