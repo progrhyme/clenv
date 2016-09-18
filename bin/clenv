@@ -7,6 +7,16 @@ version="0.2.2"
 source ${CLENV_ROOT}/shrc.d/clenv.shrc
 
 help() {
+  local command=${1:-}
+  if [[ ${command} ]]; then
+    command_path="$(command -v "clenv-$command" || true)"
+    if [[ "${command_path}" ]]; then
+      pod2text "${command_path}"
+      exit 1
+    else
+      echo "No such command: $command" >&2
+    fi
+  fi
   pod2text $0
   exit 1
 }
@@ -51,8 +61,8 @@ export PATH=${CLENV_ROOT}/libexec:$PATH
 command=${1:-}
 
 case "$command" in
-  "" | "-h" | "--help" )
-    help
+  "" | "-h" | "--help" | "help" )
+    help ${2:-}
     ;;
   "-v" )
     version
@@ -104,9 +114,13 @@ List environments:
 
     clenv list-env
 
+Commands:
+
+    clenv which EXECUTABLE  # Show path of EXECUTABLE in clenv
+
 Help:
 
-    clenv -h|--help|help
+    clenv -h|--help|help [COMMAND]
 
 Show version:
 
