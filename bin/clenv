@@ -102,11 +102,7 @@ Initialize an environment:
 Switch environments:
 
     . shrc.d/clenv.shrc
-
-    # switch and load libraries
     clenv_use $env
-    # only switch
-    clenv_switch $env
 
 List environments:
 

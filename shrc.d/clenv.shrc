@@ -2,10 +2,8 @@ __clenv_default_env="default"
 __clenv_base_dir=${CLENV_ROOT:-"$HOME/.clenv"}
 . ${__clenv_base_dir}/shrc.d/cload.shrc
 
-clenv_switch() {
-  if [ "${CLENV_DEBUG:-}" ]; then
-    set -x
-  fi
+clenv_use() {
+  [ "${CLENV_DEBUG:-}" ] && set -x
   local prev_clenv=${CLENV_ENVIRONMENT:-}
   local _env=${1:-${__clenv_default_env}}
   local _env_dir=${__clenv_base_dir}/environments/${_env}
@@ -22,17 +20,6 @@ clenv_switch() {
   set +x
 }
 
-clenv_use() {
-  local _env=${1:-${__clenv_default_env}}
-  local _env_dir=${__clenv_base_dir}/environments/${_env}
-  clenv_switch $_env
-  local _lib_dir=${_env_dir}/lib
-  local rc
-  for rc in $(ls $_lib_dir/); do
-    . $_lib_dir/$rc
-  done
-}
-
 : <<'__EOF__'
 
 =encoding utf8
@@ -47,10 +34,7 @@ B<clenv.shrc> - Provides shell functions for C<clenv>
 
 Switch environments:
 
-    # switch and load libraries
     clenv_use $env
-    # only switch
-    clenv_switch $env
 
 =head1 DESCRIPTION
 

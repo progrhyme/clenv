@@ -25,22 +25,10 @@ for i in 1 2; do
     mkdir -p $__clenv_base_dir/environments/test$i/$dir
   done
 done
-cat <<EOLIB > $__clenv_base_dir/environments/test2/lib/foo.shrc
-__test2_foo="TEST2_FOO"
-EOLIB
-
-(
-  t_substart "clenv_switch"
-  clenv_switch test1
-  t_is $CLENV_ENVIRONMENT "test1" "switch to test1"
-  t_subclose
-)
-t_subend "clenv_switch"
 
 T_SUB "clenv_use" ((
   clenv_use test2
   t_is $CLENV_ENVIRONMENT "test2" "switch to test2"
-  t_is $__test2_foo "TEST2_FOO" "library loaded"
 ))
 
 rm -rf $__clenv_base_dir
