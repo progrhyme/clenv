@@ -1,3 +1,11 @@
+## 0.4.0 (2016/9/18)
+
+Change:
+
+- clenv #5
+  - Remove `clenv_switch` shell function
+  - Change `clenv_use` not to load shell resources
+
 ## 0.3.2 (2016/9/18)
 
 Enhance:
