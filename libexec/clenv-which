@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CLENV_COMMAND="${1:-}"
+
+if [[ -z "${CLENV_COMMAND}" ]]; then
+  pod2text $0 >&2
+  exit 1
+fi
+
+if [[ -z "${CLENV_ENVIRONMENT}" ]]; then
+  echo "clenv not initialized yet! Run 'clenv init-env' at first." >&2
+  exit 1
+fi
+
+CLENV_COMMAND_PATH="${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/bin/${CLENV_COMMAND}"
+
+if [[ -x "${CLENV_COMMAND_PATH}" ]]; then
+  echo "${CLENV_COMMAND_PATH}"
+else
+  echo "clenv: ${CLENV_COMMAND} - command not found." >&2
+  exit 2
+fi
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clenv-which> - Search and show command path in clenv
+
+=head1 SYNOPSYS
+
+    clenv-which COMMAND
+
+=head1 DESCRIPTION
+
+This command searches and shows command path in C<clenv> environment.
+
+=head1 AUTHORS
+
+IKEDA Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 IKEDA Kiyoshi
+
+=cut
+
+__EOF__
+
