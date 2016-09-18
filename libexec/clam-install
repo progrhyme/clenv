@@ -132,12 +132,17 @@ cd $workdir
 if [ -r clam.spec ];then
   unset name
   unset version
+  unset executablepath
   unset executables
   unset librarypath
   unset libraries
   source clam.spec
   name=${name:-$module}
   version=${version:-0}
+  if [[ "${executablepath:-}" && "${executables:-}" ]]; then
+    echo "Can't specify both 'executablepath' and 'executables' at once!" >&2
+    exit 1
+  fi
   if [[ "${librarypath:-}" && "${libraries:-}" ]]; then
     echo "Can't specify both 'librarypath' and 'libraries' at once!" >&2
     exit 1
@@ -231,6 +236,9 @@ create_shim() {
   return 0
 }
 
+if [[ "${executablepath:-}" ]]; then
+  executables="$(echo $(find $executablepath -mindepth 1 -maxdepth 1))"
+fi
 if [[ "${librarypath:-}" ]]; then
   libraries="$(echo $(find $librarypath -mindepth 1 -maxdepth 1))"
 fi
