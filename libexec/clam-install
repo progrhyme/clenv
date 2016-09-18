@@ -175,7 +175,7 @@ lib_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/lib
 
 check_materials() {
   local _srcs="$1"
-  [[ "$_srcs" ]] || return
+  [[ "$_srcs" ]] || return 0
   local _dest=$2
   local _type=${3:-}
   local err f _b __dest_path
@@ -207,7 +207,7 @@ check_materials() {
 
 install_materials() {
   local _srcs="$1"
-  [[ "$_srcs" ]] || return
+  [[ "$_srcs" ]] || return 0
   local _dest=$2
   local _shim=${3:-}
   local f _b __src_path __dest_path
