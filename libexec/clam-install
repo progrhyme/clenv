@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+[[ ${CLAM_DEBUG:-} ]] && set -x
 
 source ${CLENV_ROOT}/lib/util.shrc
 source ${CLENV_ROOT}/lib/version.shrc
 source ${CLENV_ROOT}/lib/clamdb.shrc
-
-if [[ ${CLAM_DEBUG:-} ]]; then
-  set -x
-fi
 
 git_sync() {
   local _src=$1
