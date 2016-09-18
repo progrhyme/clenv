@@ -1,3 +1,14 @@
+## 0.3.0 (2016/9/18)
+
+Change:
+
+- `shims` is changed from symlink to directory
+- clam.spec
+  - Obsolete `resources` field
+  - Add `librarypath` or `libraries` fields
+- clenv
+  - Add subcommands `exec` and `which`
+
 ## 0.2.2 (2016/9/18)
 
 Improve:
