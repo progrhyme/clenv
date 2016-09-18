@@ -69,27 +69,17 @@ clenv init-env [$env]
 This command creates `$CLENV_ROOT/environments/$env`.  
 Default `$env` is `"default"`.
 
-And to use `clam` modules in the environment, run either of following shell functions:
+And to use `clam` modules in the environment, run following shell function:
 
 ```sh
-# Switch symlinks
-clenv_switch $env
-# Load libraries in addition
 clenv_use $env
 ```
 
-`clenv_switch $env` does followings:
+This function does followings:
 
 - Set environment variable `CLENV_ENVIRONMENT` to `$env`.
-- Create symlink `$CLENV_ROOT/shims` of `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin`.
-
-`clenv_use $env` does followings **in addition** to `clenv_switch $env`:
-
-- Load shell resources by `source` command which are in
-  `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib` directory.
-
-To use `clenv_use` or `clenv_switch` is your choice.  
-Use one which you prefer.
+- Add `$CLENV_ROOT/environments/$env/lib` to `CLOAD_PATH` environment variable.
+See [cload](#cload) section for `CLOAD_PATH`.
 
 # clam
 
