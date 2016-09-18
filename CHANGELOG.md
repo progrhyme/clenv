@@ -1,3 +1,9 @@
+## 0.3.1 (2016/9/18)
+
+Bug Fix:
+
+- clam-install failed when `executables` or `libraries` are missing.
+
 ## 0.3.0 (2016/9/18)
 
 Change:
