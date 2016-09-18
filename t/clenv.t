@@ -33,8 +33,6 @@ EOLIB
   t_substart "clenv_switch"
   clenv_switch test1
   t_is $CLENV_ENVIRONMENT "test1" "switch to test1"
-  _link=$(readlink ${__clenv_base_dir}/shims)
-  t_is $_link "${__clenv_base_dir}/environments/test1/bin" "shims linked to test1/bin"
   t_subclose
 )
 t_subend "clenv_switch"
@@ -42,8 +40,6 @@ t_subend "clenv_switch"
 T_SUB "clenv_use" ((
   clenv_use test2
   t_is $CLENV_ENVIRONMENT "test2" "switch to test2"
-  _link=$(readlink ${__clenv_base_dir}/shims)
-  t_is $_link "${__clenv_base_dir}/environments/test2/bin" "shims linked to test2/bin"
   t_is $__test2_foo "TEST2_FOO" "library loaded"
 ))
 

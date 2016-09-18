@@ -7,14 +7,22 @@ version="0.2.2"
 source ${CLENV_ROOT}/shrc.d/clenv.shrc
 
 help() {
+  local command=${1:-}
+  if [[ ${command} ]]; then
+    command_path="$(command -v "clenv-$command" || true)"
+    if [[ "${command_path}" ]]; then
+      pod2text "${command_path}"
+      exit 1
+    else
+      echo "No such command: $command" >&2
+    fi
+  fi
   pod2text $0
   exit 1
 }
 
 init-env() {
-  if [[ ${CLENV_DEBUG:-} ]]; then
-    set -x
-  fi
+  [[ ${CLENV_DEBUG:-} ]] && set -x
   local _env=${1:-${__clenv_default_env}}
   local _env_dir=${__clenv_base_dir}/environments/${_env}
   if [ -d $_env_dir ]; then
@@ -46,11 +54,13 @@ version() {
   fi
 }
 
+export PATH=${CLENV_ROOT}/libexec:$PATH
+
 command=${1:-}
 
 case "$command" in
-  "" | "-h" | "--help" )
-    help
+  "" | "-h" | "--help" | "help" )
+    help ${2:-}
     ;;
   "-v" )
     version
@@ -58,9 +68,18 @@ case "$command" in
   "--version" )
     version --verbose
     ;;
-  * )
+  "init-env" | "list-env" )
     shift
     ${command} "$@"
+    ;;
+  * )
+    command_path="$(command -v "clenv-$command" || true)"
+    if [[ -z "${command_path}" ]]; then
+      echo "no such command - '$command'" >&2
+      exit 1
+    fi
+    shift
+    exec "${command_path}" "$@"
     ;;
 esac
 
@@ -93,17 +112,25 @@ List environments:
 
     clenv list-env
 
+Commands:
+
+    clenv exec EXECUTABLE   # Execute EXECUTABLE in clenv
+    clenv which EXECUTABLE  # Show path of EXECUTABLE in clenv
+
 Help:
 
-    clenv -h|--help|help
+    clenv -h|--help|help [COMMAND]
 
 Show version:
 
-    clenv -v|--version|version
+    clenv -v|--version
 
 =head1 DESCRIPTION
 
-TBD.
+C<clenv> is a toolkit to organize Command-Line environments including executable
+scripts and shell resource files.
+
+See L<README.md> for more information.
 
 =head1 SEE ALSO
 

@@ -15,10 +15,6 @@ clenv_switch() {
     return 1
   fi
   export CLENV_ENVIRONMENT=$_env
-  if [ -s ${__clenv_base_dir}/shims ]; then
-    rm -f ${__clenv_base_dir}/shims
-  fi
-  ln -sf ${_env_dir}/bin ${__clenv_base_dir}/shims
   if [ "$prev_clenv" ]; then
     cload_path_del ${__clenv_base_dir}/environments/${prev_clenv}/lib
   fi

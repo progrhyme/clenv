@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+[[ ${CLAM_DEBUG:-} ]] && set -x
 
 source ${CLENV_ROOT}/lib/util.shrc
 source ${CLENV_ROOT}/lib/version.shrc
 source ${CLENV_ROOT}/lib/clamdb.shrc
 
-if [[ ${CLAM_DEBUG:-} ]]; then
-  set -x
-fi
+SHIMS_DIR=${CLENV_ROOT}/shims
+SHIM_TEMPLATE=${CLENV_ROOT}/resource/shim-template
 
 git_sync() {
   local _src=$1
@@ -133,10 +133,15 @@ if [ -r clam.spec ];then
   unset name
   unset version
   unset executables
-  unset resources
+  unset librarypath
+  unset libraries
   source clam.spec
   name=${name:-$module}
   version=${version:-0}
+  if [[ "${librarypath:-}" && "${libraries:-}" ]]; then
+    echo "Can't specify both 'librarypath' and 'libraries' at once!" >&2
+    exit 1
+  fi
 else
   echo "clam.spec file not found! Can't install." >&2
   cleanup
@@ -168,25 +173,73 @@ cleanup
 bin_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/bin
 lib_dir=${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/lib
 
-install_materials() {
-  local _src=$1
+check_materials() {
+  local _srcs="$1"
+  [[ "$_srcs" ]] || return
   local _dest=$2
-  local f __path
+  local _type=${3:-}
+  local err f _b __dest_path
 
-  if [[ $_src ]]; then
-    for f in $(\ls -1 $_src); do
-      if [ -f $f ]; then
-        __path=$(abspath $f)
-        ln -s ${__path} ${_dest}/
-      else
-        echo "Not exist $f Skip." >&2
+  for f in $_srcs; do
+    if [[ $_type = "--executable" ]]; then
+      if [[ ! -x $f ]]; then
+        err=1
+        echo "[Error] Not executable $f." >&2
+        continue
       fi
-    done
-  fi
+    elif [[ ! -e $f ]]; then
+      err=1
+      echo "[Error] Not exit $f." >&2
+      continue
+    fi
+
+    _b=${f##*/}
+    __dest_path=${_dest}/${_b}
+    if [[ -e ${__dest_path} ]]; then
+      err=1
+      echo "[Error] Some file already exists at install path! ${__dest_path}" >&2
+      continue
+    fi
+  done
+
+  [[ -z "${err:-}" ]] || exit 1
 }
 
-install_materials "${executables:-}" $bin_dir
-install_materials "${resources:-}" $lib_dir
+install_materials() {
+  local _srcs="$1"
+  [[ "$_srcs" ]] || return
+  local _dest=$2
+  local _shim=${3:-}
+  local f _b __src_path __dest_path
+
+  for x in $_srcs; do
+    _b=${x##*/}
+    __dest_path=${_dest}/${_b}
+    __src_path=$(abspath $x)
+    ln -s ${__src_path} ${__dest_path}
+    [[ -z "$_shim" ]] || create_shim "${_b}"
+  done
+}
+
+create_shim() {
+  local _cmd="$1"
+  local _shim="${SHIMS_DIR}/${_cmd}"
+  [[ -x ${_shim} ]] && return
+
+  install ${SHIM_TEMPLATE} $_shim
+  echo "${_shim} created."
+  return 0
+}
+
+if [[ "${librarypath:-}" ]]; then
+  libraries="$(echo $(find $librarypath -mindepth 1 -maxdepth 1))"
+fi
+
+check_materials "${executables:-}" $bin_dir --executable
+check_materials "${libraries:-}" $lib_dir
+
+install_materials "${executables:-}" $bin_dir --shims
+install_materials "${libraries:-}" $lib_dir
 
 clamdb_add $name $version
 

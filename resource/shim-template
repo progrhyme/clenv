@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+[[ ${CLENV_DEBUG:-} ]] && set -x
+
+program="${0##*/}"
+
+exec "${CLENV_ROOT}/bin/clenv" exec "$program" "$@"

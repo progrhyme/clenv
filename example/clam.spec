@@ -1,4 +1,5 @@
 name=foo
 version=0.1
-executables=bin/*
-resources=lib/*
+executables="bin/foo bin/bar"
+librarypath="lib"
+#libraries="foo.sh lib/foo.sh"
