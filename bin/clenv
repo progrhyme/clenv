@@ -128,7 +128,10 @@ Show version:
 
 =head1 DESCRIPTION
 
-TBD.
+C<clenv> is a toolkit to organize Command-Line environments including executable
+scripts and shell resource files.
+
+See L<README.md> for more information.
 
 =head1 SEE ALSO
 
