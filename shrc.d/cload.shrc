@@ -1,44 +1,53 @@
 export CLOAD_PATH=${CLOAD_PATH:-}
 
 __cload_search() {
-  local _base=$1
-  local _path=$2
-  local _ext
+  _base=$1
+  _path=$2
   for _ext in "" .sh .shrc; do
-    local _fullpath="${_path}/${_base}${_ext}"
+    _fullpath="${_path}/${_base}${_ext}"
     if [ -r $_fullpath -a ! -d $_fullpath ]; then
       echo ${_fullpath}
+      unset _base _path _ext _fullpath
       return
     fi
   done
+  unset _base _path _ext
   return 1
 }
 
 cload_search() {
-  local shrc=$1
-  local _path
+  shrc=$1
   if [ -r $shrc -a ! -d $shrc ]; then
     echo "$shrc"
+    unset shrc
     return
   fi
   for _path in $(echo $CLOAD_PATH | tr ':' ' '); do
-    __cload_search $shrc $_path && return
+    if __cload_search $shrc $_path; then
+      unset shrc _path
+      return
+    fi
   done
+  unset shrc _path
   return 1
 }
 
 cllib() {
-  local shrc=$1
-  local _lib=$(cload_search $shrc)
-  [ -z "$_lib" ] && return 1
+  shrc=$1
+  _lib=$(cload_search $shrc)
+  if [ -z "$_lib" ]; then
+    unset shrc _lib
+    return 1
+  fi
   . $_lib
+  unset shrc _lib
 }
 
 cload_path_push() {
-  local _tgt=$1
-  local _path _p
+  _tgt=$1
   if [ -z "$CLOAD_PATH" ]; then
     CLOAD_PATH=$_tgt
+    unset _tgt
     return
   fi
   for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
@@ -50,13 +59,14 @@ cload_path_push() {
     fi
   done
   CLOAD_PATH="$_path:$_tgt"
+  unset _tgt _p _path
 }
 
 cload_path_unshift() {
-  local _tgt=$1
-  local _path _p
+  _tgt=$1
   if [ -z "$CLOAD_PATH" ]; then
     CLOAD_PATH=$_tgt
+    unset _tgt
     return
   fi
   for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
@@ -68,11 +78,11 @@ cload_path_unshift() {
     fi
   done
   CLOAD_PATH="$_tgt:$_path"
+  unset _tgt _p _path
 }
 
 cload_path_del() {
-  local _tgt=$1
-  local _path _p
+  _tgt=$1
   for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
     [ "$_p" = "$_tgt" ] && continue
     if [ "$_path" ]; then
@@ -82,6 +92,7 @@ cload_path_del() {
     fi
   done
   CLOAD_PATH=$_path
+  unset _path _p
 }
 
 : <<'__EOF__'

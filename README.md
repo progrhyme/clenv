@@ -63,7 +63,7 @@ export PATH="$HOME/.clenv/shims:$PATH"
 Then, you need initialize an environment.
 
 ```
-clenv init-env [$env]
+clenv create [$env]
 ```
 
 This command creates `$CLENV_ROOT/environments/$env`.  
@@ -173,7 +173,7 @@ cllib mylib
 And file name _mylib_ is also fine.
 
 `cload` searches files under the directories specified by environment variable **CLOAD_PATH**.  
-`clenv_switch` sets `CLOAD_PATH` according to target `CLENV_ENVIRONMENT` you are going to switch to.
+`clenv_use` sets `CLOAD_PATH` according to target `CLENV_ENVIRONMENT` you are going to switch to.
 
 `cload` itself is independent from _clenv_.  
 You can use `cload` out of _clenv_ in the following way:

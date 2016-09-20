@@ -4,7 +4,7 @@ set -euo pipefail
 
 version="0.4.0"
 
-source ${CLENV_ROOT}/lib/clamdb.shrc
+source ${CLENV_ROOT}/lib/clamdb.bashrc
 
 if [[ ${CLAM_DEBUG:-} ]]; then
   set -x

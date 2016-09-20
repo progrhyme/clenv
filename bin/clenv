@@ -21,30 +21,6 @@ help() {
   exit 1
 }
 
-init-env() {
-  [[ ${CLENV_DEBUG:-} ]] && set -x
-  local _env=${1:-${__clenv_default_env}}
-  local _env_dir=${__clenv_base_dir}/environments/${_env}
-  if [ -d $_env_dir ]; then
-    echo "'$_env' already exists" >&2
-  else
-    mkdir -p $_env_dir/{bin,lib,modules}
-    echo "Initialized env '$_env'"
-  fi
-  set +x
-}
-
-list-env() {
-  local _env
-  for _env in $(\ls -1 ${__clenv_base_dir}/environments/); do
-    local _pref=" "
-    if [[ $_env = $CLENV_ENVIRONMENT ]]; then
-      _pref="*"
-    fi
-    echo "${_pref} ${_env}"
-  done
-}
-
 version() {
   local _verbose=${1:-}
   if [[ $_verbose ]]; then
@@ -67,10 +43,6 @@ case "$command" in
     ;;
   "--version" )
     version --verbose
-    ;;
-  "init-env" | "list-env" )
-    shift
-    ${command} "$@"
     ;;
   * )
     command_path="$(command -v "clenv-$command" || true)"
@@ -95,23 +67,20 @@ B<clenv> - CLI to control I<clenv> environments
 
 =head1 SYNOPSYS
 
-Initialize an environment:
-
-    clenv init-env $env
-
 Switch environments:
 
     . shrc.d/clenv.shrc
     clenv_use $env
 
-List environments:
-
-    clenv list-env
-
 Commands:
 
-    clenv exec EXECUTABLE   # Execute EXECUTABLE in clenv
-    clenv which EXECUTABLE  # Show path of EXECUTABLE in clenv
+    clenv create [ENVIRONMENT] # Initialize ENVIRONMENT
+    clenv environ              # Show current environment
+    clenv environs             # List environments
+    clenv global [ENVIRONMENT] # Get/Set global environment
+    clenv local  [ENVIRONMENT] # Get/Set local environment
+    clenv exec   EXECUTABLE    # Execute EXECUTABLE in clenv
+    clenv which  EXECUTABLE    # Show path of EXECUTABLE in clenv
 
 Help:
 

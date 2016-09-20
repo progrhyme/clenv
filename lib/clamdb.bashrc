@@ -1,3 +1,5 @@
+# bash
+
 clamdb_init() {
   local base=${1:-"${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}"}
   local _absdir=$(cd ${base} && pwd)

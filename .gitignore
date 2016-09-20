@@ -5,6 +5,8 @@
 /tmp/
 
 # clenv materials including clam modules
+/environment
+.clenv-environment
 /environments/
 /shims
 
