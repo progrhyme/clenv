@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+[[ ${CLENV_DEBUG:-} ]] && set -x
+
+source ${CLENV_ROOT}/shrc.d/clenv.shrc
+source ${CLENV_ROOT}/lib/clenv_environment.bashrc
+
+CLENV_ENVIRONMENT=${1:-}
+CLENV_ENVIRONMENT_FILE="$(pwd)/.clenv-environment"
+
+if [[ -n $CLENV_ENVIRONMENT ]]; then
+  if [[ ! -d "${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}" ]]; then
+    echo "Environment '${CLENV_ENVIRONMENT}' is not created" >&2
+    echo "Run: clenv create $CLENV_ENVIRONMENT" >&2
+    exit 1
+  fi
+  echo "$CLENV_ENVIRONMENT" > "$CLENV_ENVIRONMENT_FILE"
+  exit 0
+elif [[ -r "$CLENV_ENVIRONMENT_FILE" ]]; then
+  CLENV_ENVIRONMENT="$(clenv_environ "${CLENV_ENVIRONMENT_FILE}" || true)"
+fi
+
+if [[ -n $CLENV_ENVIRONMENT ]]; then
+  echo "$CLENV_ENVIRONMENT (set by ${CLENV_ENVIRONMENT_FILE})"
+else
+  echo "No local environment is set for this directory" >&2
+  echo "Run: clenv local <ENVIRONMENT>" >&2
+  exit 1
+fi
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clenv-local> - Get or Set C<clenv> local environment
+
+=head1 SYNOPSYS
+
+    # Get
+    clenv local
+    # Set
+    clenv local <ENVIRONMENT>
+
+=head1 DESCRIPTION
+
+This command get or set C<clenv> local environment.
+
+=head1 AUTHORS
+
+IKEDA Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 IKEDA Kiyoshi
+
+=cut
+
+__EOF__
+
