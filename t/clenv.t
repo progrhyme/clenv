@@ -3,7 +3,7 @@ export CLENV_ROOT=.
 
 clenv=${__clenv_base_dir}/bin/clenv
 
-T_SUB "clenv init-env" ((
+t::group "clenv init-env" ({
   (
     $clenv create test1 >/dev/null
     $clenv create test2 >/dev/null
@@ -13,7 +13,7 @@ T_SUB "clenv init-env" ((
   t_is $? 0 "exists test1 bin"
   test -d ${__clenv_base_dir}/environments/test2/lib
   t_is $? 0 "exists test2 lib"
-))
+})
 for i in 1 2; do
   rm -rf $__clenv_base_dir/environments/test$i
 done
@@ -26,10 +26,10 @@ for i in 1 2; do
   done
 done
 
-T_SUB "clenv_use" ((
+t::group "clenv_use" ({
   clenv_use test2
   t_is $CLENV_ENVIRONMENT "test2" "switch to test2"
-))
+})
 
 rm -rf $__clenv_base_dir
 
