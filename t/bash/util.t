@@ -1,4 +1,4 @@
-. lib/util.shrc
+. lib/util.bashrc
 
 T_SUB "split_string" ((
   T_SUB "split by space" ((

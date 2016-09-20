@@ -3,9 +3,9 @@
 set -euo pipefail
 [[ ${CLAM_DEBUG:-} ]] && set -x
 
-source ${CLENV_ROOT}/lib/util.shrc
-source ${CLENV_ROOT}/lib/version.shrc
-source ${CLENV_ROOT}/lib/clamdb.shrc
+source ${CLENV_ROOT}/lib/util.bashrc
+source ${CLENV_ROOT}/lib/version.bashrc
+source ${CLENV_ROOT}/lib/clamdb.bashrc
 
 SHIMS_DIR=${CLENV_ROOT}/shims
 SHIM_TEMPLATE=${CLENV_ROOT}/resource/shim-template

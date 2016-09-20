@@ -1,5 +1,5 @@
-. lib/util.shrc
-. lib/version.shrc
+. lib/util.bashrc
+. lib/version.bashrc
 
 (
   t_substart "version_compare"
