@@ -21,17 +21,6 @@ help() {
   exit 1
 }
 
-list-env() {
-  local _env
-  for _env in $(\ls -1 ${__clenv_base_dir}/environments/); do
-    local _pref=" "
-    if [[ $_env = $CLENV_ENVIRONMENT ]]; then
-      _pref="*"
-    fi
-    echo "${_pref} ${_env}"
-  done
-}
-
 version() {
   local _verbose=${1:-}
   if [[ $_verbose ]]; then
@@ -54,10 +43,6 @@ case "$command" in
     ;;
   "--version" )
     version --verbose
-    ;;
-  "list-env" )
-    shift
-    ${command} "$@"
     ;;
   * )
     command_path="$(command -v "clenv-$command" || true)"
@@ -87,13 +72,10 @@ Switch environments:
     . shrc.d/clenv.shrc
     clenv_use $env
 
-List environments:
-
-    clenv list-env
-
 Commands:
 
     clenv create [ENVIRONMENT] # Initialize ENVIRONMENT
+    clenv environs             # List environments
     clenv exec   EXECUTABLE    # Execute EXECUTABLE in clenv
     clenv which  EXECUTABLE    # Show path of EXECUTABLE in clenv
 
