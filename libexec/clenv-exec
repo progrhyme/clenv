@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
 [[ ${CLENV_DEBUG:-} ]] && set -x
 
 CLENV_COMMAND="$1"
