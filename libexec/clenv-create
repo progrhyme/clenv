@@ -6,7 +6,7 @@ set -euo pipefail
 source ${CLENV_ROOT}/shrc.d/clenv.shrc
 
 env=${1:-${__clenv_default_env}}
-env_dir=${__clenv_base_dir}/environments/$env
+env_dir=${CLENV_ROOT}/environments/$env
 if [[ -d $env_dir ]]; then
   echo "'$env' already exists" >&2
 else

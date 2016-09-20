@@ -16,7 +16,7 @@ if [[ -z "${CLENV_ENVIRONMENT:-}" ]]; then
   exit 1
 fi
 
-if [[ ! -d "${__clenv_base_dir}/environments/${CLENV_ENVIRONMENT}" ]]; then
+if [[ ! -d "${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}" ]]; then
   echo "Environment '${CLENV_ENVIRONMENT}' is not created" >&2
   exit 1
 fi

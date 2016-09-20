@@ -1,3 +1,5 @@
+export CLENV_ROOT=.
+export PATH="$(pwd)/shims:$(pwd)/bin:$PATH"
 . shrc.d/cload.shrc
 
 t::group "cload_search" ({
