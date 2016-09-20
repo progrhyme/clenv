@@ -1,11 +1,10 @@
-__clenv_default_env="default"
 export CLENV_ROOT="${CLENV_ROOT:-$HOME/.clenv}"
 . ${CLENV_ROOT}/shrc.d/cload.shrc
 
 clenv_use() {
   [ "${CLENV_DEBUG:-}" ] && set -x
   prev_clenv=${CLENV_ENVIRONMENT:-}
-  _env=${1:-${__clenv_default_env}}
+  _env=${1:-default}
   _env_dir=${CLENV_ROOT}/environments/${_env}
   if [ ! -d $_env_dir ]; then
     echo "'$_env' doesn't exist!" >&2
