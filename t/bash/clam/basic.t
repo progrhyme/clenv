@@ -3,7 +3,7 @@ export PATH="$(pwd)/shims:$(pwd)/bin:$PATH"
 . shrc.d/clenv.shrc
 
 # Prepare an environment
-clenv init-env test-clam
+clenv create test-clam
 clenv_use test-clam
 
 T_SUB "Install and Uninstall a module" ((

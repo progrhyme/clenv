@@ -5,8 +5,8 @@ clenv=${__clenv_base_dir}/bin/clenv
 
 T_SUB "clenv init-env" ((
   (
-    $clenv init-env test1 >/dev/null
-    $clenv init-env test2 >/dev/null
+    $clenv create test1 >/dev/null
+    $clenv create test2 >/dev/null
   )
   t_is $? 0 "succeed to initialize test1, test2 env"
   test -d ${__clenv_base_dir}/environments/test1/bin
