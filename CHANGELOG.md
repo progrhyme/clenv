@@ -1,3 +1,23 @@
+## 0.5.0 (2016/9/21)
+
+Change:
+
+- clenv subcommands #6
+  - Rename `init-env` to `create`
+  - Rename `list-env` to `environs`
+
+Fix:
+
+- Omit strict `set` command from `clenv exec` #6
+- Remove `local` variables for POSIX shell compatiability #6
+
+Features:
+
+- clenv new subcommands #6
+  - `global` to show or set global environment
+  - `local` to show or set local environment for current directory
+  - `environ` to show environment in current context
+
 ## 0.4.0 (2016/9/18)
 
 Change:
