@@ -75,6 +75,7 @@ Switch environments:
 Commands:
 
     clenv create [ENVIRONMENT] # Initialize ENVIRONMENT
+    clenv environ              # Show current environment
     clenv environs             # List environments
     clenv exec   EXECUTABLE    # Execute EXECUTABLE in clenv
     clenv which  EXECUTABLE    # Show path of EXECUTABLE in clenv
