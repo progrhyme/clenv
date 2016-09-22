@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+[[ ${CLAM_DEBUG:-} ]] && set -x
+
+source ${CLENV_ROOT}/lib/clamdb.bashrc
+
+clamdb_init
+clamdb_list
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clam-list> - List installed C<clam> modules
+
+=head1 SYNOPSYS
+
+    clam-list
+
+=head1 DESCRIPTION
+
+This script list installed C<clam> modules in current CLENV_ENVIRONMENT.
+
+=head1 AUTHORS
+
+IKEDA Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+The MIT License (MIT)
+
+Copyright (c) 2016 IKEDA Kiyoshi
+
+=cut
+
+__EOF__
+

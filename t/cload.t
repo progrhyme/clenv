@@ -1,4 +1,4 @@
-export CLENV_ROOT=.
+export CLENV_ROOT="$(pwd)"
 export PATH="$(pwd)/shims:$(pwd)/bin:$PATH"
 . shrc.d/cload.shrc
 
@@ -22,6 +22,10 @@ t::group "cload_path_push" ({
   CLOAD_PATH=
   cload_path_push /lib
   t_is $CLOAD_PATH "/lib"
+  t::group "When push same dir" ({
+    cload_path_push /lib
+    t_is $CLOAD_PATH "/lib" "not pushed"
+  })
   cload_path_push /usr/lib
   t_is $CLOAD_PATH "/lib:/usr/lib"
 })
@@ -30,6 +34,10 @@ t::group "cload_path_unshift" ({
   CLOAD_PATH=
   cload_path_unshift /lib
   t_is $CLOAD_PATH "/lib"
+  t::group "When unshift same dir" ({
+    cload_path_unshift /lib
+    t_is $CLOAD_PATH "/lib" "not unshifted"
+  })
   cload_path_unshift /usr/lib
   t_is $CLOAD_PATH "/usr/lib:/lib"
 })
@@ -42,6 +50,15 @@ t::group "cload_path_del" ({
   t_is $CLOAD_PATH "/usr/lib"
   cload_path_del /usr/lib
   t_ng $CLOAD_PATH
+})
+
+t::group "_prepare_to_load_clenv_libs" ({
+  CLOAD_PATH=
+  clenv create cload-test
+  export CLENV_ENVIRONMENT="cload-test"
+  _prepare_to_load_clenv_libs
+  t_is "$CLOAD_PATH" "$CLENV_ROOT/environments/cload-test/lib"
+  rm -rf $CLENV_ROOT/environments/cload-test
 })
 
 # vim:set ft=sh :

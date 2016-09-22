@@ -1,10 +1,15 @@
-export CLENV_ROOT=$(pwd)
+export CLENV_ROOT="$(pwd)"
 export PATH="$(pwd)/shims:$(pwd)/bin:$PATH"
-. shrc.d/clenv.shrc
+
+# backup if exists
+local_envfile="$(pwd)/.clenv-environment"
+if [[ -e "$local_envfile" ]]; then
+  mv "$local_envfile" "tmp/local-environment.bak"
+fi
 
 # Prepare an environment
 clenv create test-clam
-clenv_use test-clam
+clenv local test-clam
 
 t::group "Install and Uninstall a module" ({
   module="test-simple"
@@ -21,6 +26,12 @@ t::group "Install and Uninstall a module" ({
 })
 
 # Destroy environment
+rm -f .clenv-environment
 rm -rf ${CLENV_ROOT}/environments/test-clam
+
+# restore
+if [[ -e tmp/local-environment.bak ]]; then
+  mv tmp/local-environment.bak "$local_envfile"
+fi
 
 # vim:set ft=sh :

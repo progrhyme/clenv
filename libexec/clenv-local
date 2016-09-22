@@ -3,7 +3,6 @@
 set -euo pipefail
 [[ ${CLENV_DEBUG:-} ]] && set -x
 
-source ${CLENV_ROOT}/shrc.d/clenv.shrc
 source ${CLENV_ROOT}/lib/clenv_environment.bashrc
 
 CLENV_ENVIRONMENT=${1:-}

@@ -1,5 +1,2 @@
 export CLENV_ROOT=$HOME/.clenv
-export CLENV_ENVIRONMENT=default
-export PATH="$HOME/.clenv/bin:$PATH"
-export PATH="$HOME/.clenv/shims:$PATH"
-. ${CLENV_ROOT}/shrc.d/clenv.shrc
+PATH="$CLENV_ROOT/shims:$CLENV_ROOT/bin:$PATH"

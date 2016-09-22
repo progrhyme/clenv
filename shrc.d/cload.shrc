@@ -1,3 +1,5 @@
+# sh
+
 export CLOAD_PATH=${CLOAD_PATH:-}
 
 __cload_search() {
@@ -16,6 +18,7 @@ __cload_search() {
 }
 
 cload_search() {
+  _prepare_to_load_clenv_libs
   shrc=$1
   if [ -r $shrc -a ! -d $shrc ]; then
     echo "$shrc"
@@ -33,9 +36,11 @@ cload_search() {
 }
 
 cllib() {
+  [ -n "${CLOAD_DEBUG:-}" ] && set -x
   shrc=$1
   _lib=$(cload_search $shrc)
   if [ -z "$_lib" ]; then
+    echo "cllib: '$shrc' not found"
     unset shrc _lib
     return 1
   fi
@@ -43,55 +48,72 @@ cllib() {
   unset shrc _lib
 }
 
+_prepare_to_load_clenv_libs() {
+  [ -z "${CLENV_ROOT:-}" ] && return
+
+  _env=$($CLENV_ROOT/bin/clenv environ --short 2>/dev/null || true)
+  [ -z "$_env" ] && return
+  cload_path_push "${CLENV_ROOT}/environments/${_env}/lib"
+  unset _env
+}
+
+# Don't push if exists
 cload_path_push() {
-  _tgt=$1
+  _tgt="$1"
   if [ -z "$CLOAD_PATH" ]; then
-    CLOAD_PATH=$_tgt
+    CLOAD_PATH="$_tgt"
     unset _tgt
     return
   fi
+  _path=
   for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
-    [ "$_p" = "$_tgt" ] && continue
-    if [ "$_path" ]; then
+    [ "$_p" = "$_tgt" ] && return # exists
+    if [ -n "$_path" ]; then
       _path="$_path:$_p"
     else
-      _path=$_p
+      _path="$_p"
     fi
   done
-  CLOAD_PATH="$_path:$_tgt"
+  if [ -n "$_path" ]; then
+    CLOAD_PATH="$_path:$_tgt"
+  fi
   unset _tgt _p _path
 }
 
+# Don't unshift if exists
 cload_path_unshift() {
-  _tgt=$1
+  _tgt="$1"
   if [ -z "$CLOAD_PATH" ]; then
-    CLOAD_PATH=$_tgt
+    CLOAD_PATH="$_tgt"
     unset _tgt
     return
   fi
+  _path=
   for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
-    [ "$_p" = "$_tgt" ] && continue
-    if [ "$_path" ]; then
+    [ "$_p" = "$_tgt" ] && return # exists
+    if [ -n "$_path" ]; then
       _path="$_path:$_p"
     else
-      _path=$_p
+      _path="$_p"
     fi
   done
-  CLOAD_PATH="$_tgt:$_path"
+  if [ -n "$_path" ]; then
+    CLOAD_PATH="$_tgt:$_path"
+  fi
   unset _tgt _p _path
 }
 
 cload_path_del() {
-  _tgt=$1
+  _tgt="$1"
   for _p in $(echo $CLOAD_PATH | tr ':' ' '); do
     [ "$_p" = "$_tgt" ] && continue
     if [ "$_path" ]; then
       _path="$_path:$_p"
     else
-      _path=$_p
+      _path="$_p"
     fi
   done
-  CLOAD_PATH=$_path
+  CLOAD_PATH="$_path"
   unset _path _p
 }
 

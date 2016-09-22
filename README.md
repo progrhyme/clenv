@@ -55,9 +55,7 @@ functions.
 
 ```sh
 export CLENV_ROOT=$HOME/.clenv
-export PATH="$HOME/.clenv/bin:$PATH"
-export PATH="$HOME/.clenv/shims:$PATH"
-. ${CLENV_ROOT}/shrc.d/clenv.shrc
+PATH="$CLENV_ROOT/shims:$CLENV_ROOT/bin:$PATH"
 ```
 
 Then, you need initialize an environment.
@@ -69,19 +67,22 @@ clenv create [$env]
 This command creates `$CLENV_ROOT/environments/$env`.  
 Default `$env` is `"default"`.
 
-And to use `clam` modules in the environment, run following shell function:
+Then, set the environment as _global_ by following command:
 
-```sh
-clenv_use $env
+```
+clenv global $env
 ```
 
-This function does followings:
+This command create `$CLENV_ROOT/environment` file.
 
-- Set environment variable `CLENV_ENVIRONMENT` to `$env`.
-- Add `$CLENV_ROOT/environments/$env/lib` to `CLOAD_PATH` environment variable.
-See [cload](#cload) section for `CLOAD_PATH`.
+An alternative is `clenv local $env`.
+This creates `.clenv-environment` file in current directory.
+
+Run `clenv environ[s]` command to see which environment is active now.
 
 # clam
+
+You can install clam modules in **clenv** environments.
 
 `clam -h` may show you what are not described here in more detail.
 
@@ -117,12 +118,12 @@ librarypath="lib"
 
 With this `clam.spec`, `clam` installs as followings:
 
-- Copy module directory as `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/modules/foo/`
+- Copy module directory as `$CLENV_ROOT/environments/$env/modules/foo/`
 directory.
-- Create symlinks of `bin/foo` file into `$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/bin/`
+- Create symlinks of `bin/foo` file into `$CLENV_ROOT/environments/$env/bin/`
 directory.
 - Create symlinks of files or directories just under `lib/` into
-`$CLENV_ROOT/environments/$CLENV_ENVIRONMENT/lib/` directory.
+`$CLENV_ROOT/environments/$env/lib/` directory.
 
 Alternatives:
 

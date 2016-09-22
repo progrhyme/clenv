@@ -3,8 +3,6 @@
 set -euo pipefail
 [[ ${CLENV_DEBUG:-} ]] && set -x
 
-source ${CLENV_ROOT}/shrc.d/clenv.shrc
-
 for env in $(\ls -1 ${CLENV_ROOT}/environments/); do
   prefix=" "
   if [[ $env = $CLENV_ENVIRONMENT ]]; then

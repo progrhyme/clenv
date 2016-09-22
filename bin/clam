@@ -25,13 +25,9 @@ version() {
   exit 0
 }
 
-list() {
-  clamdb_init
-  clamdb_list
-  exit 0
-}
+arg="${1:-}"
 
-case "$1" in
+case "$arg" in
   "install" | "--install" )
     command=install
     shift
@@ -45,9 +41,9 @@ case "$1" in
     shift
     ;;
   "list" | "-l" | "--list" )
-    list
+    command=list
     ;;
-  "-h" | "--help" )
+  "" | "-h" | "--help" )
     help
     ;;
   "-v" )
@@ -61,8 +57,10 @@ case "$1" in
     ;;
 esac
 
-if [[ -z ${CLENV_ENVIRONMENT:-} ]]; then
-  echo "CLENV_ENVIRONMENT not set! Please run 'clenv use \$env'." >&2
+export CLENV_ENVIRONMENT=$(clenv environ --short || true)
+
+if [[ -z "$CLENV_ENVIRONMENT" ]]; then
+  echo "clam: Can't get clenv environ! Configure 'clenv' at first" >&2
   exit 1
 fi
 
