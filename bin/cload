@@ -8,9 +8,7 @@ bin_dir=$(cd $(dirname $0) && pwd)
 lib_dir=$(cd ${bin_dir}/../shrc.d && pwd)
 source ${lib_dir}/cload.shrc
 
-if [[ ${CLOAD_DEBUG:-} ]]; then
-  set -x
-fi
+[[ ${CLOAD_DEBUG:-} ]] && set -x
 
 help() {
   pod2text $0
@@ -27,8 +25,10 @@ version() {
   exit 0
 }
 
-case "$1" in
-  "-h" | "--help" )
+arg="${1:-}"
+
+case "$arg" in
+  "" | "-h" | "--help" )
     help ;;
   "-v" )
     version ;;
@@ -41,7 +41,7 @@ case "$1" in
   * ) ;;
 esac
 
-shrc=$1
+shrc="$arg"
 shrc_path=$(cload_search $shrc) || :
 if [[ $shrc_path ]]; then
   echo ". $shrc_path"
