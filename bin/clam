@@ -25,12 +25,6 @@ version() {
   exit 0
 }
 
-list() {
-  clamdb_init
-  clamdb_list
-  exit 0
-}
-
 arg="${1:-}"
 
 case "$arg" in
@@ -47,7 +41,7 @@ case "$arg" in
     shift
     ;;
   "list" | "-l" | "--list" )
-    list
+    command=list
     ;;
   "" | "-h" | "--help" )
     help
