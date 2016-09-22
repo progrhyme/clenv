@@ -31,7 +31,9 @@ list() {
   exit 0
 }
 
-case "$1" in
+arg="${1:-}"
+
+case "$arg" in
   "install" | "--install" )
     command=install
     shift
@@ -47,7 +49,7 @@ case "$1" in
   "list" | "-l" | "--list" )
     list
     ;;
-  "-h" | "--help" )
+  "" | "-h" | "--help" )
     help
     ;;
   "-v" )
