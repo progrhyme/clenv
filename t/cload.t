@@ -54,7 +54,7 @@ t::group "cload_path_del" ({
 
 t::group "_prepare_to_load_clenv_libs" ({
   CLOAD_PATH=
-  CLENV_ENVIRONMENT="foo bar"
+  CLENV_ENVIRONMENT="foo"
   _prepare_to_load_clenv_libs
   t_is "$CLOAD_PATH" "$CLENV_ROOT/environments/foo/lib"
 })
