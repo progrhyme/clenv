@@ -10,12 +10,12 @@ if [[ -z "${CLENV_COMMAND}" ]]; then
   exit 1
 fi
 
-if [[ -z "${CLENV_ENVIRONMENT}" ]]; then
+if [[ -z "$(clenv environ || true)" ]]; then
   echo "clenv not initialized yet! Run 'clenv init-env' at first." >&2
   exit 1
 fi
 
-CLENV_COMMAND_PATH="${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}/bin/${CLENV_COMMAND}"
+CLENV_COMMAND_PATH="${CLENV_ROOT}/environments/$(clenv environ --short)/bin/${CLENV_COMMAND}"
 
 if [[ -x "${CLENV_COMMAND_PATH}" ]]; then
   echo "${CLENV_COMMAND_PATH}"
