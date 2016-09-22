@@ -1,3 +1,5 @@
+# sh
+
 export CLOAD_PATH=${CLOAD_PATH:-}
 
 __cload_search() {
@@ -33,6 +35,7 @@ cload_search() {
 }
 
 cllib() {
+  [ -n "${CLOAD_DEBUG:-}" ] && set -x
   shrc=$1
   _lib=$(cload_search $shrc)
   if [ -z "$_lib" ]; then

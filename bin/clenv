@@ -6,6 +6,11 @@ version="0.5.0"
 
 source ${CLENV_ROOT}/shrc.d/clenv.shrc
 
+if [[ -n ${CLENV_DEBUG:-} ]]; then
+  set -x
+  export CLENV_DEBUG
+fi
+
 help() {
   local command=${1:-}
   if [[ ${command} ]]; then
