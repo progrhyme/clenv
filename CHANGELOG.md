@@ -1,3 +1,24 @@
+## 0.6.0 (2016/9/22)
+
+Obsolete: #7
+
+- `clenv_use` is deleted.
+- `shrc.d/clenv.shrc` is deleted.
+
+Bug Fix: #7
+
+- [cload] Failed to add CLOAD_PATH when entry exists
+
+Improve: #7
+
+- `CLENV_ENVIRONMENT` env var is not required for all commands: Use `clenv environ`
+instead.
+- [cload, clenv] Show help when no argument given.
+
+Minor Enhance: #7
+
+- `clenv environ` - Add `--short` option to print environment only
+
 ## 0.5.0 (2016/9/21)
 
 Change:

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-version="0.5.0"
+version="0.6.0"
 
 source ${CLENV_ROOT}/lib/clamdb.bashrc
 
