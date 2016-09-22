@@ -6,9 +6,7 @@ version="0.5.0"
 
 base_dir="$(cd $(dirname $0)/.. && pwd)"
 shrc_dir="${base_dir}/shrc.d"
-lib_dir="${base_dir}/lib"
 source "${shrc_dir}/cload.shrc"
-source "${lib_dir}/cload/clenv.bashrc"
 
 [[ ${CLOAD_DEBUG:-} ]] && set -x
 
@@ -42,8 +40,6 @@ case "$arg" in
     ;;
   * ) ;;
 esac
-
-prepare_clenv_for_cload
 
 shrc="$arg"
 shrc_path="$(cload_search $shrc)" || :

@@ -18,6 +18,7 @@ __cload_search() {
 }
 
 cload_search() {
+  _prepare_to_load_clenv_libs
   shrc=$1
   if [ -r $shrc -a ! -d $shrc ]; then
     echo "$shrc"
@@ -44,6 +45,16 @@ cllib() {
   fi
   . $_lib
   unset shrc _lib
+}
+
+_prepare_to_load_clenv_libs() {
+  [ -z "${CLENV_ROOT:-}" ] && return
+
+  _env=${CLENV_ENVIRONMENT:-$($CLENV_ROOT/bin/clenv environ 2>/dev/null || true)}
+  [ -z "$_env" ] && return
+  _env=$(echo $_env | awk '{print $1}')
+  cload_path_push "${CLENV_ROOT}/environments/${_env}/lib"
+  unset _env
 }
 
 # Don't push if exists

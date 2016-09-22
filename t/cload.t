@@ -52,4 +52,11 @@ t::group "cload_path_del" ({
   t_ng $CLOAD_PATH
 })
 
+t::group "_prepare_to_load_clenv_libs" ({
+  CLOAD_PATH=
+  CLENV_ENVIRONMENT="foo bar"
+  _prepare_to_load_clenv_libs
+  t_is "$CLOAD_PATH" "$CLENV_ROOT/environments/foo/lib"
+})
+
 # vim:set ft=sh :
