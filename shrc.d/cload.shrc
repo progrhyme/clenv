@@ -40,6 +40,7 @@ cllib() {
   shrc=$1
   _lib=$(cload_search $shrc)
   if [ -z "$_lib" ]; then
+    echo "cllib: '$shrc' not found"
     unset shrc _lib
     return 1
   fi
