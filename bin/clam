@@ -63,8 +63,10 @@ case "$arg" in
     ;;
 esac
 
-if [[ -z ${CLENV_ENVIRONMENT:-} ]]; then
-  echo "CLENV_ENVIRONMENT not set! Please run 'clenv use \$env'." >&2
+export CLENV_ENVIRONMENT=$(clenv environ --short || true)
+
+if [[ -z "$CLENV_ENVIRONMENT" ]]; then
+  echo "clam: Can't get clenv environ! Configure 'clenv' at first" >&2
   exit 1
 fi
 
