@@ -5,7 +5,7 @@ set -euo pipefail
 
 for env in $(\ls -1 ${CLENV_ROOT}/environments/); do
   prefix=" "
-  if [[ $env = $CLENV_ENVIRONMENT ]]; then
+  if [[ $env = $(clenv environ --short) ]]; then
     prefix="*"
   fi
   echo "${prefix} ${env}"
