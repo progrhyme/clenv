@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-version="0.6.0"
+version="0.6.1"
 
 base_dir="$(cd $(dirname $0)/.. && pwd)"
 shrc_dir="${base_dir}/shrc.d"

@@ -1,3 +1,14 @@
+## 0.6.1 (2016/9/22)
+
+Feature:
+
+- `clenv init` to bootstrap clenv #8
+
+Bug Fix:
+
+- `clenv environs` uses `clenv environ` internally instead of `CLENV_ENVIRONMENT`
+environment variable #8
+
 ## 0.6.0 (2016/9/22)
 
 Obsolete: #7
