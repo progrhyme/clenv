@@ -4,11 +4,14 @@ set -euo pipefail
 
 version="0.5.0"
 
-source ${CLENV_ROOT}/shrc.d/clenv.shrc
-
 if [[ -n ${CLENV_DEBUG:-} ]]; then
   set -x
   export CLENV_DEBUG
+fi
+
+export CLENV_ROOT="${CLENV_ROOT:-}"
+if [[ -z "$CLENV_ROOT" ]]; then
+  CLENV_ROOT="$(cd $(dirname $0)/.. && pwd)"
 fi
 
 help() {
@@ -72,11 +75,6 @@ B<clenv> - CLI to control I<clenv> environments
 
 =head1 SYNOPSYS
 
-Switch environments:
-
-    . shrc.d/clenv.shrc
-    clenv_use $env
-
 Commands:
 
     clenv create [ENVIRONMENT] # Initialize ENVIRONMENT
@@ -101,10 +99,6 @@ C<clenv> is a toolkit to organize Command-Line environments including executable
 scripts and shell resource files.
 
 See L<README.md> for more information.
-
-=head1 SEE ALSO
-
-L<shrc.d/clenv.shrc>
 
 =head1 AUTHORS
 

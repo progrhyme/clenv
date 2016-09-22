@@ -1,13 +1,12 @@
 export CLENV_ROOT="$(pwd)"
 export PATH="$(pwd)/shims:$(pwd)/bin:$PATH"
-. shrc.d/clenv.shrc
 
 # clear
 CLENV_ENVIRONMENT=
 
 # backup if exists
-if [[ -e ${CLENV_ROOT}/environment ]]; then
-  mv ${CLENV_ROOT}/environment tmp/global-environment.bak
+if [[ -e "${CLENV_ROOT}/environment" ]]; then
+  mv "${CLENV_ROOT}/environment" tmp/global-environment.bak
 fi
 
 clenv create "global-test" >/dev/null
@@ -37,7 +36,7 @@ t::group "Set global environment" ({
 
 # restore
 if [[ -e tmp/global-environment.bak ]]; then
-  mv tmp/global-environment.bak ${CLENV_ROOT}/environment
+  mv tmp/global-environment.bak "${CLENV_ROOT}/environment"
 fi
 
 rm -rf ${CLENV_ROOT}/environments/global-test

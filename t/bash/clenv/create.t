@@ -1,6 +1,5 @@
-export CLENV_ROOT=.
+export CLENV_ROOT="$(pwd)"
 export PATH="$(pwd)/shims:$(pwd)/bin:$PATH"
-. shrc.d/clenv.shrc
 
 t::group "clenv create" ({
   (
