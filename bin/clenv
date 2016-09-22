@@ -77,6 +77,7 @@ B<clenv> - CLI to control I<clenv> environments
 
 Commands:
 
+    clenv init [-]             # Bootstrap
     clenv create [ENVIRONMENT] # Initialize ENVIRONMENT
     clenv environ              # Show current environment
     clenv environs             # List environments

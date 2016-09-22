@@ -39,43 +39,52 @@ Executable files:
 
 # Requirements
 
-- _Bash_ or _Zsh_
-- Hopefully work with _sh_ or _dash_ as well
+- Recommend: _Bash_ or _Zsh_
+- Support other POSIX shells: _sh_, _dash_ and _ksh_
 
 # Install
 
 ```
-git clone https://github.com/key-amb/clenv.git ~/.clenv
+git clone https://github.com/key-amb/clenv.git ~/.clenv # Or your favorite path
 ```
 
 # Configure
 
-To use `clenv`, it is required to set some environment variables and load shell
-functions.
+To use `clenv`, append following commands to your shell profile:
 
 ```sh
 export CLENV_ROOT=$HOME/.clenv
-PATH="$CLENV_ROOT/shims:$CLENV_ROOT/bin:$PATH"
+export PATH="$CLENV_ROOT/bin:$PATH"
+eval "$(clenv init -)"
 ```
 
-Then, you need initialize an environment.
+Then, restart your shell and `clenv` will be ready.
+
+Check your installation like this:
+
+```sh
+% clenv environ
+default (set by /home/key-amb/.clenv/environment)
+```
+
+"default" is your first _clenv environment_.  
+You can add other environments by `clenv create` command:
 
 ```
-clenv create [$env]
+clenv create $env
 ```
 
-This command creates `$CLENV_ROOT/environments/$env`.  
-Default `$env` is `"default"`.
+This command creates `$env` under `$CLENV_ROOT/environments/`.  
 
-Then, set the environment as _global_ by following command:
+And `clenv global` command set the environment as _global_ one:
 
 ```
 clenv global $env
 ```
 
-This command create `$CLENV_ROOT/environment` file.
+This command create or replace `$CLENV_ROOT/environment` file.
 
-An alternative is `clenv local $env`.
+Alternative command is `clenv local $env`.
 This creates `.clenv-environment` file in current directory.
 
 Run `clenv environ[s]` command to see which environment is active now.
