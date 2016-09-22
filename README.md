@@ -44,7 +44,7 @@ Executable files:
 
 # Install
 
-```
+```sh
 git clone https://github.com/key-amb/clenv.git ~/.clenv # Or your favorite path
 ```
 
@@ -97,7 +97,7 @@ You can install clam modules in **clenv** environments.
 
 ## Install modules by `clam`
 
-```
+```sh
 # Install local module
 clam [install] /path/to/module [-f|--force]
 
@@ -116,7 +116,7 @@ You can specify `-f|--force` option to force re-install it.
 
 A `clam.spec` file looks like below:
 
-```
+```sh
 name=foo
 version=0.1
 executables="bin/foo"
@@ -183,7 +183,8 @@ cllib mylib
 And file name _mylib_ is also fine.
 
 `cload` searches files under the directories specified by environment variable **CLOAD_PATH**.  
-`clenv_use` sets `CLOAD_PATH` according to target `CLENV_ENVIRONMENT` you are going to switch to.
+With `clenv` configured, `cload` or `cllib` appends `$CLENV_ROOT/environments/$env/lib`
+to `CLOAD_PATH` implicitly.
 
 `cload` itself is independent from _clenv_.  
 You can use `cload` out of _clenv_ in the following way:
