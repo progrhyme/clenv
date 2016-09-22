@@ -54,9 +54,11 @@ t::group "cload_path_del" ({
 
 t::group "_prepare_to_load_clenv_libs" ({
   CLOAD_PATH=
-  CLENV_ENVIRONMENT="foo"
+  clenv create cload-test
+  export CLENV_ENVIRONMENT="cload-test"
   _prepare_to_load_clenv_libs
-  t_is "$CLOAD_PATH" "$CLENV_ROOT/environments/foo/lib"
+  t_is "$CLOAD_PATH" "$CLENV_ROOT/environments/cload-test/lib"
+  rm -rf $CLENV_ROOT/environments/cload-test
 })
 
 # vim:set ft=sh :
