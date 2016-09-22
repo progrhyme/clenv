@@ -1,4 +1,4 @@
-export CLENV_ROOT=.
+export CLENV_ROOT="$(pwd)"
 export PATH="$(pwd)/shims:$(pwd)/bin:$PATH"
 . shrc.d/cload.shrc
 
@@ -22,6 +22,10 @@ t::group "cload_path_push" ({
   CLOAD_PATH=
   cload_path_push /lib
   t_is $CLOAD_PATH "/lib"
+  t::group "When push same dir" ({
+    cload_path_push /lib
+    t_is $CLOAD_PATH "/lib" "not pushed"
+  })
   cload_path_push /usr/lib
   t_is $CLOAD_PATH "/lib:/usr/lib"
 })
@@ -30,6 +34,10 @@ t::group "cload_path_unshift" ({
   CLOAD_PATH=
   cload_path_unshift /lib
   t_is $CLOAD_PATH "/lib"
+  t::group "When unshift same dir" ({
+    cload_path_unshift /lib
+    t_is $CLOAD_PATH "/lib" "not unshifted"
+  })
   cload_path_unshift /usr/lib
   t_is $CLOAD_PATH "/usr/lib:/lib"
 })
