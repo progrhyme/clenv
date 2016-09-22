@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+[[ ${CLENV_DEBUG:-} ]] && set -x
+
+arg=${1:-}
+if [[ $arg != "-" ]]; then
+  pod2text $0
+  exit 1
+fi
+
+# Set up default environment
+clenv-create &>/dev/null
+
+if [[ ! -e "$CLENV_ROOT/environment" ]]; then
+  clenv-global default
+fi
+
+echo 'export PATH="'${CLENV_ROOT}'/shims:${PATH}"'
+
+exit 0
+
+: <<'__EOF__'
+
+=encoding utf8
+
+=head1 NAME
+
+B<clenv-init> - Bootstrap C<clenv> environment
+
+=head1 SYNOPSYS
+
+Load clenv:
+
+    # Append to your shell profile
+    export CLENV_ROOT=$HOME/.clenv
+    export PATH="$CLENV_ROOT/bin:$PATH"
+    eval "$(clenv init -)"
+
+=head1 DESCRIPTION
+
+This command bootstrap C<clenv> environment for first use in your system.
+
+=head1 AUTHORS
+
+IKEDA Kiyoshi E<lt>yasutake.kiyoshi@gmail.comE<gt>
+
+=head1 LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 IKEDA Kiyoshi
+
+=cut
+
+__EOF__
+
