@@ -5,6 +5,8 @@ set -euo pipefail
 
 source ${CLENV_ROOT}/lib/clenv_environment.bashrc
 
+opt=${1:-}
+
 if [[ -z "${CLENV_ENVIRONMENT:-}" ]]; then
   CLENV_ENVIRONMENT_FILE="$(clenv_environ_file)"
   CLENV_ENVIRONMENT="$(clenv_environ "${CLENV_ENVIRONMENT_FILE}" || true)"
@@ -20,7 +22,9 @@ if [[ ! -d "${CLENV_ROOT}/environments/${CLENV_ENVIRONMENT}" ]]; then
   exit 1
 fi
 
-if [[ -n "${CLENV_ENVIRONMENT_FILE:-}" ]]; then
+if [[ "$opt" = "--short" ]]; then
+  echo "$CLENV_ENVIRONMENT"
+elif [[ -n "${CLENV_ENVIRONMENT_FILE:-}" ]]; then
   echo "$CLENV_ENVIRONMENT (set by ${CLENV_ENVIRONMENT_FILE})"
 else
   echo "$CLENV_ENVIRONMENT (set by CLENV_ENVIRONMENT)"
