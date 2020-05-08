@@ -227,7 +227,7 @@ But the latter has advantage in terms of performance on larger system.
 
 # AUTHORS
 
-IKEDA Kiyoshi <yasutake.kiyoshi@gmail.com>
+IKEDA Kiyoshi <progrhyme@gmail.com>
 
 # LICENSE
 
