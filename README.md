@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/key-amb/clenv.svg?branch=master)](https://travis-ci.org/key-amb/clenv)
+[![Build Status](https://travis-ci.org/progrhyme/clenv.svg?branch=master)](https://travis-ci.org/progrhyme/clenv)
 
 # clenv
 
@@ -45,7 +45,7 @@ Executable files:
 # Install
 
 ```sh
-git clone https://github.com/key-amb/clenv.git ~/.clenv # Or your favorite path
+git clone https://github.com/progrhyme/clenv.git ~/.clenv # Or your favorite path
 ```
 
 # Configure
@@ -64,7 +64,7 @@ Check your installation like this:
 
 ```sh
 % clenv environ
-default (set by /home/key-amb/.clenv/environment)
+default (set by /home/progrhyme/.clenv/environment)
 ```
 
 "default" is your first _clenv environment_.  
@@ -147,9 +147,9 @@ one `Clamfile`.
 A `Clamfile` looks like below:
 
 ```
-bb         0.2.0    https://github.com/key-amb/bash-bb.git
-pathctl    1.0.0    https://github.com/key-amb/sh-pathctl.git
-shove      0.7.2    https://github.com/key-amb/shove.git
+bb         0.2.0    https://github.com/progrhyme/bash-bb.git
+pathctl    1.0.0    https://github.com/progrhyme/sh-pathctl.git
+shove      0.7.2    https://github.com/progrhyme/shove.git
 ```
 
 When you run `clam install-deps [Clamfile]` in the directory in which there is this

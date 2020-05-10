@@ -5,7 +5,7 @@ set -euxo pipefail
 shove_dir="vendor/shove"
 
 if [[ ! -d $shove_dir ]]; then
-  git clone https://github.com/key-amb/shove.git $shove_dir
+  git clone https://github.com/progrhyme/shove.git $shove_dir
 else
   cd $shove_dir
   git pull origin master
